@@ -127,7 +127,7 @@ namespace DevWorksCapstone.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", developer.IdentityUserId);
+           
             return View(developer);
         }
 
@@ -136,7 +136,7 @@ namespace DevWorksCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DeveloperId,UserName,GitHubLink,ProfileImgURL,Bio,IsInContract,IdentityUserId")] Developer developer)
+        public async Task<IActionResult> Edit(int id, Developer developer)
         {
             if (id != developer.DeveloperId)
             {
@@ -163,7 +163,6 @@ namespace DevWorksCapstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", developer.IdentityUserId);
             return View(developer);
         }
 
