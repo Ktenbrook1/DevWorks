@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using DevWorksCapstone.Models.APIKeys;
+using DevWorksCapstone.Models.MyAPIKeys;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using DevWorksCapstone.ActionFilters;
@@ -42,8 +42,8 @@ namespace DevWorksCapstone
             })
             .AddGoogle(options =>
             {
-                options.ClientId = Keys.clientId;
-                options.ClientSecret = Keys.clientSecret;
+                options.ClientId = MyKeys.clientId;
+                options.ClientSecret = MyKeys.clientSecret;
 
               
             });
