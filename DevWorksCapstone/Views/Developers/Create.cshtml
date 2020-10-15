@@ -1,0 +1,80 @@
+﻿@model DevWorksCapstone.Models.Developer
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Developer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GitHubLink" class="control-label"></label>
+                <input asp-for="GitHubLink" class="form-control" />
+                <span asp-validation-for="GitHubLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileImgURL" class="control-label"></label>
+                <input asp-for="ProfileImgURL" class="form-control" />
+                <span asp-validation-for="ProfileImgURL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bio" class="control-label"></label>
+                <input asp-for="Bio" class="form-control" />
+                <span asp-validation-for="Bio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RatePerHr" class="control-label"></label>
+                <input asp-for="RatePerHr" class="form-control" />
+                <span asp-validation-for="RatePerHr" class="text-danger"></span>
+            </div>
+            <div class="container">
+                @using (Html.BeginForm("Index", "Home"))
+                {
+                    foreach (var item in Model.AllAbilities)
+                    {
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       name="SelectedTags"
+                                       value="@item.Value"
+                                       @if (Model.SelectedAbilities.Contains(item.Value)) { <text> checked </text> } /> @item.Text
+                                </label>
+                            </div>
+                        }
+                        <div class="form-group text-center">
+                            <input type="submit" class="btn btn-primary" style="float:left; margin: 20px 0 20px 0; " value="Submit" />
+                        </div>
+                    }
+            </div>
+            @*<div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="IsInContract" /> @Html.DisplayNameFor(model => model.IsInContract)
+            </label>
+        </div>*@
+            @*<input type="hidden" asp-for="IsInContract" />*@
+            <input type="hidden" asp-for="IdentityUserId" />
+            @*<div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>*@
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
