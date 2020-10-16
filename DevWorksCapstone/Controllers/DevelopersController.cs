@@ -95,13 +95,13 @@ namespace DevWorksCapstone.Controllers
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 developer.IdentityUserId = userId;
                 
-                _context.Add(developer);
+                _context.Developers.Add(developer);
                 await _context.SaveChangesAsync();
 
                 var selectedDeveloper = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
                 foreach (string ability in developer.SelectedAbilities)
                 {
-                    var selectedAbilities = _context.Abilities.Where(r => r.AbilityName == ability).SingleOrDefault();
+                    var selectedAbilities = _context.Abilities.Where(a => a.AbilityName == ability).SingleOrDefault();
 
                     DeveloperAbilities developerAbilities = new DeveloperAbilities();
                     developerAbilities.DeveloperId = selectedDeveloper.DeveloperId;

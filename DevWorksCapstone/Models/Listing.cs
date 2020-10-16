@@ -32,7 +32,7 @@ namespace DevWorksCapstone.Models
         public int EmployerId { get; set; }
         public Employer Employer { get; set; }
 
-        public string EmpmloyerName { get; set; }
+        public string EmployerName { get; set; }
 
         public ICollection<EmployersWantedAbilities> EmployersWantedAbilities { get; set; }
     }

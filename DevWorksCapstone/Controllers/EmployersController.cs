@@ -33,9 +33,9 @@ namespace DevWorksCapstone.Controllers
                 return RedirectToAction("Create");
             }
 
-            var loggedInEmployer2 = _context.Developers.Where(c => c.IdentityUserId == userId).Include(c => c.IdentityUser);
+            var loggedInEmployer2 = _context.Employers.Where(c => c.IdentityUserId == userId).Include(c => c.IdentityUser);
 
-            ViewData["DeveloperExists"] = loggedInEmployer2.Count() == 1;
+            ViewData["EmployerExists"] = loggedInEmployer2.Count() == 1;
 
             return View(loggedInEmployer2);
         }
@@ -62,8 +62,8 @@ namespace DevWorksCapstone.Controllers
         // GET: Employers/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            Employer employer = new Employer();
+            return View(employer);
         }
 
         // POST: Employers/Create
@@ -71,15 +71,18 @@ namespace DevWorksCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployerId,UserName,CompanyName,ProfileImgURL,IdentityUserId")] Employer employer)
+        public async Task<IActionResult> Create(Employer employer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employer);
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                employer.IdentityUserId = userId;
+
+                _context.Employers.Add(employer);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employer.IdentityUserId);
             return View(employer);
         }
 
@@ -96,7 +99,6 @@ namespace DevWorksCapstone.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employer.IdentityUserId);
             return View(employer);
         }
 
@@ -105,7 +107,7 @@ namespace DevWorksCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployerId,UserName,CompanyName,ProfileImgURL,IdentityUserId")] Employer employer)
+        public async Task<IActionResult> Edit(int id, Employer employer)
         {
             if (id != employer.EmployerId)
             {
@@ -132,7 +134,6 @@ namespace DevWorksCapstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", employer.IdentityUserId);
             return View(employer);
         }
 
@@ -169,6 +170,41 @@ namespace DevWorksCapstone.Controllers
         private bool EmployerExists(int id)
         {
             return _context.Employers.Any(e => e.EmployerId == id);
+        }
+        public IActionResult CreateListing()
+        {
+            Listing listing = new Listing();
+            listing.AllAbilities = GetAbilities();
+            return View(listing);
+        }
+        public IList<SelectListItem> GetAbilities()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Text = "FrontEnd", Value = "FrontEnd" },
+                new SelectListItem { Text = "BackEnd", Value = "BackEnd" },
+                new SelectListItem { Text = "App Developer", Value = "App Developer" },
+                new SelectListItem { Text = "React", Value = "React" }
+            };
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateListing(Listing listing)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var employerFound = _context.Employers.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+               // listing.EmployerId == employerFound.EmployerId;
+
+
+                _context.Employ.Add(employer);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(employer);
         }
     }
 }

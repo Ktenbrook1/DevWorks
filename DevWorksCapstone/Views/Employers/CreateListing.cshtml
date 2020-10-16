@@ -1,0 +1,63 @@
+﻿@model DevWorksCapstone.Models.Listing
+
+@{
+    ViewData["Title"] = "CreateListing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>CreateListing</h1>
+
+<h4>Listing</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateListing">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate.Date" class="control-label"></label>
+                <input asp-for="StartDate.Date" class="form-control" />
+                <span asp-validation-for="StartDate.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RateLookingFor" class="control-label"></label>
+                <input asp-for="RateLookingFor" class="form-control" />
+                <span asp-validation-for="RateLookingFor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PositionsOpen" class="control-label"></label>
+                <input asp-for="PositionsOpen" class="form-control" />
+                <span asp-validation-for="PositionsOpen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployerId" class="control-label"></label>
+                <select asp-for="EmployerId" class ="form-control" asp-items="ViewBag.EmployerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployerName" class="control-label"></label>
+                <input asp-for="EmployerName" class="form-control" />
+                <span asp-validation-for="EmployerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
