@@ -25,22 +25,24 @@ namespace DevWorksCapstone.Controllers
         // GET: Developers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Developers.Include(d => d.IdentityUser);
-
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            if (loggedInDeveloper == null)
+            List<Developer> loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).Include(e => e.IdentityUser).ToList();  
+
+            if (loggedInDeveloper.Count() == 0)
             {
                 return RedirectToAction("Create");
-
             }
+            else
+            {
+                loggedInDeveloper[0].SelectedAbilities = _context.DeveloperAbilities
+               .Where(da => da.DeveloperId == loggedInDeveloper[0].DeveloperId)
+               .Select(da => da.Ability.AbilityName)
+               .ToList();
 
-            var loggedInDeveloper2 = _context.Developers.Where(c => c.IdentityUserId == userId).Include(c => c.IdentityUser);
-
-            ViewData["DeveloperExists"] = loggedInDeveloper2.Count() == 1;
-
-            return View(loggedInDeveloper2);
+                ViewData["DeveloperExists"] = loggedInDeveloper.Count() == 1;
+                return View(loggedInDeveloper);
+            }
         }
 
         // GET: Developers/Details/5
@@ -74,13 +76,30 @@ namespace DevWorksCapstone.Controllers
 
         public IList<SelectListItem> GetAbilities()
         {
-            return new List<SelectListItem>
+            //var old = new List<SelectListItem>
+            //{
+            //    new SelectListItem { Text = "FrontEnd", Value = "FrontEnd" },
+            //    new SelectListItem { Text = "BackEnd", Value = "BackEnd" },
+            //    new SelectListItem { Text = "App Developer", Value = "App Developer" },
+            //    new SelectListItem { Text = "React", Value = "React" }
+            //};
+
+            var allAbilities = _context.Abilities.ToList();
+            List<SelectListItem> abilitiesAsSelectListItems = new List<SelectListItem>();
+
+            foreach(Ability ability in allAbilities)
             {
-                new SelectListItem { Text = "FrontEnd", Value = "FrontEnd" },
-                new SelectListItem { Text = "BackEnd", Value = "BackEnd" },
-                new SelectListItem { Text = "App Developer", Value = "App Developer" },
-                new SelectListItem { Text = "React", Value = "React" }
-            };
+                SelectListItem abilityItem = new SelectListItem()
+                {
+                    Text = ability.AbilityName,
+                    Value = ability.AbilityName
+                };
+
+                abilitiesAsSelectListItems.Add(abilityItem);
+            }
+
+
+            return abilitiesAsSelectListItems;
         }
 
         // POST: Developers/Create
@@ -99,7 +118,7 @@ namespace DevWorksCapstone.Controllers
                 await _context.SaveChangesAsync();
 
                 var selectedDeveloper = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
-                foreach (string ability in developer.SelectedAbilities)
+                foreach(string ability in selectedDeveloper.SelectedAbilities)
                 {
                     var selectedAbilities = _context.Abilities.Where(a => a.AbilityName == ability).SingleOrDefault();
 
@@ -109,7 +128,7 @@ namespace DevWorksCapstone.Controllers
                     _context.DeveloperAbilities.Add(developerAbilities);
                     _context.SaveChanges();
                 }
-                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             return View(developer);
         }

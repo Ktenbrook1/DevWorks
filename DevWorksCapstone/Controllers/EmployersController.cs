@@ -23,21 +23,18 @@ namespace DevWorksCapstone.Controllers
         // GET: Employers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Developers.Include(d => d.IdentityUser);
-
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            if (loggedInEmployer == null)
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).Include(e => e.IdentityUser);
+            if (loggedInEmployer.Count() == 0)
             {
                 return RedirectToAction("Create");
             }
-
-            var loggedInEmployer2 = _context.Employers.Where(c => c.IdentityUserId == userId).Include(c => c.IdentityUser);
-
-            ViewData["EmployerExists"] = loggedInEmployer2.Count() == 1;
-
-            return View(loggedInEmployer2);
+            else
+            {
+                ViewData["EmployerExists"] = loggedInEmployer.Count() == 1;
+                return View(loggedInEmployer);
+            }
         }
 
         // GET: Employers/Details/5
@@ -196,15 +193,26 @@ namespace DevWorksCapstone.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var employerFound = _context.Employers.Where(e => e.IdentityUserId == userId).FirstOrDefault();
-               // listing.EmployerId == employerFound.EmployerId;
+                listing.EmployerId = employerFound.EmployerId;
+                listing.EmployerName = employerFound.UserName;
 
-
-                _context.Employ.Add(employer);
+                _context.Listings.Add(listing);
                 await _context.SaveChangesAsync();
+
+                foreach (string ability in listing.SelectedAbilities)
+                {
+                    var selectedAbilities = _context.Abilities.Where(a => a.AbilityName == ability).SingleOrDefault();
+
+                    EmployersWantedAbilities employersWantedAbilities = new EmployersWantedAbilities();
+                    employersWantedAbilities.ListingId = listing.ListingId;
+                    employersWantedAbilities.AbilityId = selectedAbilities.AbilityId;
+                    _context.EmployersWantedAbilities.Add(employersWantedAbilities);
+                    _context.SaveChanges();
+                }
 
                 return RedirectToAction(nameof(Index));
             }
-            return View(employer);
+            return View(listing);
         }
     }
 }

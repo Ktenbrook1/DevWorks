@@ -44,6 +44,18 @@ namespace DevWorksCapstone.Data
             }
             );
 
+            //builder.Entity<Developer>().HasData(
+            //    new Models.Developer
+            //    {
+            //        DeveloperId = 1,
+            //        UserName = "Tommy",
+            //        GitHubLink = "https://github.com/tommy351",
+            //        ProfileImgURL = "https://upload.wikimedia.org/wikipedia/commons/d/db/Simon_Pryce_2014.jpg",
+            //        Bio = "I'm the man for the job!",
+            //        RatePerHr = 78.50,
+            //        IsInContract = false
+            //    });
+
             builder.Entity<Ability>().HasData(
                new Models.Ability
                {
