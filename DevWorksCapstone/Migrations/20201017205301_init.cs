@@ -267,7 +267,7 @@ namespace DevWorksCapstone.Migrations
                     RateLookingFor = table.Column<double>(nullable: false),
                     PositionsOpen = table.Column<int>(nullable: false),
                     EmployerId = table.Column<int>(nullable: false),
-                    EmpmloyerName = table.Column<string>(nullable: true)
+                    EmployerName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -349,8 +349,8 @@ namespace DevWorksCapstone.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "ff734a49-2c4f-47a4-b051-60ad611f762a", "0043e831-a724-4ac5-a456-0e67f39dc41e", "Developer", "DEVELOPER" },
-                    { "3a81199d-b995-49e3-bfd0-1e7e6a43741e", "cf3aa92f-30b7-4708-8abb-b35fb269d2eb", "Employer", "EMPLOYER" }
+                    { "ce504c2e-812b-4e3e-a187-1feb66832c0b", "958b8606-2b83-4b45-92fe-4e7a68ee6cd0", "Developer", "DEVELOPER" },
+                    { "5b824ceb-d739-4d9e-88d8-b856d71dd7dd", "e7242746-8e27-4b61-a115-55497698f0bf", "Employer", "EMPLOYER" }
                 });
 
             migrationBuilder.CreateIndex(

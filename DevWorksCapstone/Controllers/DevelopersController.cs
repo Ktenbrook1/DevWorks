@@ -68,22 +68,12 @@ namespace DevWorksCapstone.Controllers
         public IActionResult Create()
         {
             Developer developer = new Developer();
-            {
-                developer.AllAbilities = GetAbilities();
-            }
+            developer.AllAbilities = GetAbilities();
             return View(developer);
         }
 
         public IList<SelectListItem> GetAbilities()
         {
-            //var old = new List<SelectListItem>
-            //{
-            //    new SelectListItem { Text = "FrontEnd", Value = "FrontEnd" },
-            //    new SelectListItem { Text = "BackEnd", Value = "BackEnd" },
-            //    new SelectListItem { Text = "App Developer", Value = "App Developer" },
-            //    new SelectListItem { Text = "React", Value = "React" }
-            //};
-
             var allAbilities = _context.Abilities.ToList();
             List<SelectListItem> abilitiesAsSelectListItems = new List<SelectListItem>();
 
@@ -97,8 +87,6 @@ namespace DevWorksCapstone.Controllers
 
                 abilitiesAsSelectListItems.Add(abilityItem);
             }
-
-
             return abilitiesAsSelectListItems;
         }
 
@@ -146,7 +134,7 @@ namespace DevWorksCapstone.Controllers
             {
                 return NotFound();
             }
-           
+            developer.AllAbilities = GetAbilities();
             return View(developer);
         }
 
@@ -168,6 +156,25 @@ namespace DevWorksCapstone.Controllers
                 {
                     _context.Update(developer);
                     await _context.SaveChangesAsync();
+
+                    var selectedDeveloper = _context.Developers.Where(d => d.IdentityUserId == developer.IdentityUserId).SingleOrDefault();
+                    foreach (string ability in selectedDeveloper.SelectedAbilities)
+                    {
+                        var abilitiesThatMatch = _context.DeveloperAbilities.Where(da => da.Ability.AbilityName == ability).ToList();
+                        var developerThatMatchAbilities = abilitiesThatMatch.Where(am => am.DeveloperId == developer.DeveloperId).ToList();
+                      
+                        if(developerThatMatchAbilities != null) { }
+                        else
+                        {
+                            var selectedAbilities = _context.Abilities.Where(a => a.AbilityName == ability).SingleOrDefault();
+
+                            DeveloperAbilities developerAbilities = new DeveloperAbilities();
+                            developerAbilities.DeveloperId = selectedDeveloper.DeveloperId;
+                            developerAbilities.AbilityId = selectedAbilities.AbilityId;
+                            _context.DeveloperAbilities.Add(developerAbilities);
+                            _context.SaveChanges();
+                        }                      
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {

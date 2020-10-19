@@ -160,7 +160,7 @@ namespace DevWorksCapstone.Migrations
                     b.Property<int>("EmployerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("EmpmloyerName")
+                    b.Property<string>("EmployerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
@@ -259,15 +259,15 @@ namespace DevWorksCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ff734a49-2c4f-47a4-b051-60ad611f762a",
-                            ConcurrencyStamp = "0043e831-a724-4ac5-a456-0e67f39dc41e",
+                            Id = "ce504c2e-812b-4e3e-a187-1feb66832c0b",
+                            ConcurrencyStamp = "958b8606-2b83-4b45-92fe-4e7a68ee6cd0",
                             Name = "Developer",
                             NormalizedName = "DEVELOPER"
                         },
                         new
                         {
-                            Id = "3a81199d-b995-49e3-bfd0-1e7e6a43741e",
-                            ConcurrencyStamp = "cf3aa92f-30b7-4708-8abb-b35fb269d2eb",
+                            Id = "5b824ceb-d739-4d9e-88d8-b856d71dd7dd",
+                            ConcurrencyStamp = "e7242746-8e27-4b61-a115-55497698f0bf",
                             Name = "Employer",
                             NormalizedName = "EMPLOYER"
                         });

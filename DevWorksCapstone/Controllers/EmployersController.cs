@@ -168,6 +168,18 @@ namespace DevWorksCapstone.Controllers
         {
             return _context.Employers.Any(e => e.EmployerId == id);
         }
+
+        public async Task<IActionResult> EmployerListings()
+        {
+            List<Listing> myListings = new List<Listing>();
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            myListings = await _context.Listings.Where(l => l.EmployerId == loggedInEmployer.EmployerId).ToListAsync();
+
+            return View(myListings);
+        }
         public IActionResult CreateListing()
         {
             Listing listing = new Listing();
@@ -176,13 +188,20 @@ namespace DevWorksCapstone.Controllers
         }
         public IList<SelectListItem> GetAbilities()
         {
-            return new List<SelectListItem>
+            var allAbilities = _context.Abilities.ToList();
+            List<SelectListItem> abilitiesAsSelectListItems = new List<SelectListItem>();
+
+            foreach (Ability ability in allAbilities)
             {
-                new SelectListItem { Text = "FrontEnd", Value = "FrontEnd" },
-                new SelectListItem { Text = "BackEnd", Value = "BackEnd" },
-                new SelectListItem { Text = "App Developer", Value = "App Developer" },
-                new SelectListItem { Text = "React", Value = "React" }
-            };
+                SelectListItem abilityItem = new SelectListItem()
+                {
+                    Text = ability.AbilityName,
+                    Value = ability.AbilityName
+                };
+
+                abilitiesAsSelectListItems.Add(abilityItem);
+            }
+            return abilitiesAsSelectListItems;
         }
 
         [HttpPost]
@@ -214,5 +233,78 @@ namespace DevWorksCapstone.Controllers
             }
             return View(listing);
         }
+        public async Task<IActionResult> RecommendedDevelopers(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var listing = await _context.Listings.FindAsync(id);
+            if (listing == null)
+            {
+                return NotFound();
+            }
+            //Get developers with the highest rating
+            //Get developers with the skills the are looking for based on their listing
+     
+            //  var findDevelopers = _context.DeveloperAbilities.Where(da => da.AbilityId == listing.EmployersWantedAbilities.)
+
+            var currentListing = _context.Listings.Where(l => l.ListingId == listing.ListingId).ToList();
+
+            currentListing[0].SelectedAbilities = _context.EmployersWantedAbilities
+                .Where(ewa => ewa.ListingId == currentListing[0].ListingId)
+                .Select(ewa => ewa.Ability.AbilityName)
+                .ToList();
+
+            var arrayStringAbilities = currentListing[0].SelectedAbilities;
+            List<DeveloperAbilities> junctionOfAbilities = new List<DeveloperAbilities>();
+            foreach (var ability in arrayStringAbilities)
+            {
+                var abilities = _context.DeveloperAbilities.Where(da => da.Ability.AbilityName == ability).ToList();
+               foreach(var abilitypart2 in abilities)
+                {
+                    junctionOfAbilities.Add(abilitypart2);
+                }
+            }
+            List<Developer> developers = new List<Developer>();
+            foreach ( var item in junctionOfAbilities)
+            {
+                var developersWhoMatch = _context.Developers.Where(d => d.DeveloperId == item.DeveloperId).ToList();
+                foreach(var develope in developersWhoMatch)
+                {
+                    developers.Add(develope);
+                }
+            }
+           //WILL NEED TO INCORPORATE RATINGS SOON
+            
+            return View(developers);
+        }
+
+        //[HttpPost, ActionName("RecommendedDevelopers")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> RecommendedDevelopers(Listing listing)
+        //{
+        //    //Get developers with the highest rating
+        //    //Get developers with the skills the are looking for based on their listing
+        //    List<Developer> developers = new List<Developer>();
+        //    //  var findDevelopers = _context.DeveloperAbilities.Where(da => da.AbilityId == listing.EmployersWantedAbilities.)
+
+        //    var currentListing = _context.Listings.Where(l => l.ListingId == listing.ListingId).ToList();
+
+        //    currentListing[0].SelectedAbilities = _context.EmployersWantedAbilities
+        //        .Where(ewa => ewa.ListingId == currentListing[0].ListingId)
+        //        .Select(ewa => ewa.Ability.AbilityName)
+        //        .ToList();
+
+        //    var arrayStringAbilities = currentListing[0].SelectedAbilities;
+
+        //    foreach(var ability in arrayStringAbilities)
+        //    {
+        //        var developersWithWantedAbilities = _context.DeveloperAbilities.Where(da => da.Ability.AbilityName == ability);
+        //    }       
+        //  //  var arrangeDevelopers = _context.Developers.
+        //    return View(developers);
+        //}
     }
 }

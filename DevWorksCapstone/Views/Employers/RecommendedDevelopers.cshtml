@@ -1,0 +1,67 @@
+﻿@model IEnumerable<DevWorksCapstone.Models.Developer>
+
+@{
+    ViewData["Title"] = "RecommendedDevelopers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>RecommendedDevelopers</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GitHubLink)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.ProfileImgURL)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Bio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RatePerHr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInContract)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdentityUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                <a class="anchor" href="@Html.DisplayFor(modelItem => item.GitHubLink)" target="_blank">GitHub</a>
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.ProfileImgURL)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Bio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RatePerHr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsInContract)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdentityUser.Id)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.DeveloperId">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
