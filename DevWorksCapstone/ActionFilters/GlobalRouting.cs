@@ -22,7 +22,7 @@ namespace DevWorksCapstone.ActionFilters
             {
                 if (_claimsPrincipal.IsInRole("Developer"))
                 {
-                    context.Result = new RedirectToActionResult("Index",
+                    context.Result = new RedirectToActionResult("HomePage",
                     "Developers", null);
                 }
                 else if (_claimsPrincipal.IsInRole("Employer"))

@@ -100,5 +100,6 @@ namespace DevWorksCapstone.Data
                 .WithMany(c => c.EmployersWantedAbilities)
                 .HasForeignKey(bc => bc.AbilityId);
         }
+        public DbSet<DevWorksCapstone.Models.Message> Message { get; set; }
     }
 }

@@ -7,6 +7,7 @@
 
 <h1>HomePage</h1>
 
+
 <table class="table">
     <thead>
         <tr>
@@ -35,34 +36,35 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RateLookingFor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PositionsOpen)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employer.EmployerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmployerName)
-            </td>
-            <td>
-                <a asp-action="Contact" asp-route-id="@item.ListingId">Contact</a> |
-                <a asp-action="Details" asp-route-id="@item.ListingId">Details</a> 
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RateLookingFor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PositionsOpen)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employer.EmployerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployerName)
+                </td>
+                <td>
+                    <a asp-action="Contact" asp-route-id="@item.ListingId">Contact</a> |
+                    <a asp-action="Details" asp-route-id="@item.ListingId">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

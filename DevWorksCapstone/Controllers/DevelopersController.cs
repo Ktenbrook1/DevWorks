@@ -34,12 +34,8 @@ namespace DevWorksCapstone.Controllers
             }
             else
             {
-                loggedInDeveloper[0].SelectedAbilities = _context.DeveloperAbilities
-               .Where(da => da.DeveloperId == loggedInDeveloper[0].DeveloperId)
-               .Select(da => da.Ability.AbilityName)
-               .ToList();
-
                 ViewData["DeveloperExists"] = loggedInDeveloper.Count() == 1;
+              //  return RedirectToAction(nameof(HomePage));
                 return View(loggedInDeveloper);
             }
         }
@@ -48,6 +44,12 @@ namespace DevWorksCapstone.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             List<Developer> loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).Include(e => e.IdentityUser).ToList();
+
+            if (loggedInDeveloper.Count() == 0)
+            {
+                return RedirectToAction("Create");
+            }
+
             loggedInDeveloper[0].SelectedAbilities = _context.DeveloperAbilities
               .Where(da => da.DeveloperId == loggedInDeveloper[0].DeveloperId)
               .Select(da => da.Ability.AbilityName)
@@ -57,7 +59,6 @@ namespace DevWorksCapstone.Controllers
 
             var allListings = _context.Listings.AsNoTracking();
 
-            List<EmployersWantedAbilities> junctionOfAbilities = new List<EmployersWantedAbilities>();
             List<Listing> PerfectMatch = new List<Listing>();
             List<Listing> PartialMatch = new List<Listing>();
             List<Listing> PotentialMatch = new List<Listing>();
@@ -87,13 +88,6 @@ namespace DevWorksCapstone.Controllers
                     {
                         points++;
                     }
-                    //foreach (var devAbility in arrayOfStringAbilities)
-                    //{
-                    //    if (abilityForListing == devAbility)
-                    //    {
-                           
-                    //    }
-                    //}
                 }
 
                 if (points == stringCurrentListingAbilities.Count)
@@ -130,8 +124,21 @@ namespace DevWorksCapstone.Controllers
                     }
                 }
             }
-            List<Listing> listings = new List<Listing>();
-            return (IActionResult)listings;
+            List<Listing> FinalOrganizedList = new List<Listing>();
+            foreach(var list in PerfectMatch)
+            {
+                FinalOrganizedList.Add(list);
+            }
+            foreach(var list in PartialMatch)
+            {
+                FinalOrganizedList.Add(list);
+            }
+            foreach(var list in PotentialMatch)
+            {
+                FinalOrganizedList.Add(list);
+            }
+
+            return View(FinalOrganizedList);
         }
 
         // GET: Developers/Details/5
@@ -205,7 +212,7 @@ namespace DevWorksCapstone.Controllers
                     _context.DeveloperAbilities.Add(developerAbilities);
                     _context.SaveChanges();
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(HomePage));
             }
             return View(developer);
         }
@@ -314,6 +321,22 @@ namespace DevWorksCapstone.Controllers
         private bool DeveloperExists(int id)
         {
             return _context.Developers.Any(e => e.DeveloperId == id);
+        }
+
+        public async Task<IActionResult> Contact(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var listing = await _context.Listings.FindAsync(id);
+            if (listing == null)
+            {
+                return NotFound();
+            }
+           
+            return View(listing);
         }
     }
 }
