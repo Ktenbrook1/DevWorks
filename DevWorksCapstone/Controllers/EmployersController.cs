@@ -280,31 +280,5 @@ namespace DevWorksCapstone.Controllers
             
             return View(developers);
         }
-
-        //[HttpPost, ActionName("RecommendedDevelopers")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> RecommendedDevelopers(Listing listing)
-        //{
-        //    //Get developers with the highest rating
-        //    //Get developers with the skills the are looking for based on their listing
-        //    List<Developer> developers = new List<Developer>();
-        //    //  var findDevelopers = _context.DeveloperAbilities.Where(da => da.AbilityId == listing.EmployersWantedAbilities.)
-
-        //    var currentListing = _context.Listings.Where(l => l.ListingId == listing.ListingId).ToList();
-
-        //    currentListing[0].SelectedAbilities = _context.EmployersWantedAbilities
-        //        .Where(ewa => ewa.ListingId == currentListing[0].ListingId)
-        //        .Select(ewa => ewa.Ability.AbilityName)
-        //        .ToList();
-
-        //    var arrayStringAbilities = currentListing[0].SelectedAbilities;
-
-        //    foreach(var ability in arrayStringAbilities)
-        //    {
-        //        var developersWithWantedAbilities = _context.DeveloperAbilities.Where(da => da.Ability.AbilityName == ability);
-        //    }       
-        //  //  var arrangeDevelopers = _context.Developers.
-        //    return View(developers);
-        //}
     }
 }

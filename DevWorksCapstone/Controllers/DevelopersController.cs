@@ -26,7 +26,6 @@ namespace DevWorksCapstone.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             List<Developer> loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).Include(e => e.IdentityUser).ToList();  
 
             if (loggedInDeveloper.Count() == 0)
@@ -43,6 +42,96 @@ namespace DevWorksCapstone.Controllers
                 ViewData["DeveloperExists"] = loggedInDeveloper.Count() == 1;
                 return View(loggedInDeveloper);
             }
+        }
+
+        public async Task<IActionResult> HomePage()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<Developer> loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).Include(e => e.IdentityUser).ToList();
+            loggedInDeveloper[0].SelectedAbilities = _context.DeveloperAbilities
+              .Where(da => da.DeveloperId == loggedInDeveloper[0].DeveloperId)
+              .Select(da => da.Ability.AbilityName)
+              .ToList();
+
+            var arrayOfStringAbilities = loggedInDeveloper[0].SelectedAbilities;
+
+            var allListings = _context.Listings.AsNoTracking();
+
+            List<EmployersWantedAbilities> junctionOfAbilities = new List<EmployersWantedAbilities>();
+            List<Listing> PerfectMatch = new List<Listing>();
+            List<Listing> PartialMatch = new List<Listing>();
+            List<Listing> PotentialMatch = new List<Listing>();
+            foreach (var listing in allListings)
+            {
+                //for each over all listings and get there employer desired skills
+
+                //then for each over every skill and line them up with the developers skills
+
+                // add them to the seperate list
+
+                //at the end for loop over each list to make one big list that displays in order of best fit for the developer
+                List<Listing> currentListing = _context.Listings.Where(l => l.ListingId == listing.ListingId).ToList();
+
+                currentListing[0].SelectedAbilities = _context.EmployersWantedAbilities
+                    .Where(ewa => ewa.ListingId == currentListing[0].ListingId)
+                    .Select(ewa => ewa.Ability.AbilityName)
+                    .ToList();
+
+                var stringCurrentListingAbilities = currentListing[0].SelectedAbilities;
+                int points = 0;
+
+                foreach (var abilityForListing in stringCurrentListingAbilities)
+                {
+                    var hasAbility = arrayOfStringAbilities.Contains(abilityForListing);
+                    if(hasAbility == true)
+                    {
+                        points++;
+                    }
+                    //foreach (var devAbility in arrayOfStringAbilities)
+                    //{
+                    //    if (abilityForListing == devAbility)
+                    //    {
+                           
+                    //    }
+                    //}
+                }
+
+                if (points == stringCurrentListingAbilities.Count)
+                {
+                    foreach (var list in currentListing)
+                    {
+                        if (PerfectMatch.Contains(list)) { }
+                        else
+                        {
+                            PerfectMatch.Add(list);
+                        }
+                    }
+                }
+                else if (points > 0)
+                {
+                    foreach (var list in currentListing)
+                    {
+                        if (PartialMatch.Contains(list)) { }
+                        else
+                        {
+                            PartialMatch.Add(list);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var list in currentListing)
+                    {
+                        if (PotentialMatch.Contains(list)) { }
+                        else
+                        {
+                            PotentialMatch.Add(list);
+                        }
+                    }
+                }
+            }
+            List<Listing> listings = new List<Listing>();
+            return (IActionResult)listings;
         }
 
         // GET: Developers/Details/5
