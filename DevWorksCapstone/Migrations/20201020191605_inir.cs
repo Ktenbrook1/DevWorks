@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DevWorksCapstone.Migrations
 {
-    public partial class init : Migration
+    public partial class inir : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -333,6 +333,33 @@ namespace DevWorksCapstone.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    MessageID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MessageToSend = table.Column<string>(nullable: true),
+                    ListingId = table.Column<int>(nullable: false),
+                    DevloperId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.MessageID);
+                    table.ForeignKey(
+                        name: "FK_Message_Developers_DevloperId",
+                        column: x => x.DevloperId,
+                        principalTable: "Developers",
+                        principalColumn: "DeveloperId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_Listings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "Listings",
+                        principalColumn: "ListingId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Abilities",
                 columns: new[] { "AbilityId", "AbilityName" },
@@ -349,8 +376,8 @@ namespace DevWorksCapstone.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "ce504c2e-812b-4e3e-a187-1feb66832c0b", "958b8606-2b83-4b45-92fe-4e7a68ee6cd0", "Developer", "DEVELOPER" },
-                    { "5b824ceb-d739-4d9e-88d8-b856d71dd7dd", "e7242746-8e27-4b61-a115-55497698f0bf", "Employer", "EMPLOYER" }
+                    { "23781239-0a44-4ab8-93c5-95ead3bc4db5", "628985cd-3ff0-4c7b-abcd-eb7095f65ea7", "Developer", "DEVELOPER" },
+                    { "41ce790c-add9-4145-a486-a217804ab2e4", "f94ac645-3fc0-4397-8062-b423c379fb35", "Employer", "EMPLOYER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -418,6 +445,16 @@ namespace DevWorksCapstone.Migrations
                 column: "EmployerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Message_DevloperId",
+                table: "Message",
+                column: "DevloperId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_ListingId",
+                table: "Message",
+                column: "ListingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_DevloperId",
                 table: "Reviews",
                 column: "DevloperId");
@@ -455,6 +492,9 @@ namespace DevWorksCapstone.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmployersWantedAbilities");
+
+            migrationBuilder.DropTable(
+                name: "Message");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

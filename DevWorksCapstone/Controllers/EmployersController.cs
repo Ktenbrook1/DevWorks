@@ -214,6 +214,8 @@ namespace DevWorksCapstone.Controllers
                 var employerFound = _context.Employers.Where(e => e.IdentityUserId == userId).FirstOrDefault();
                 listing.EmployerId = employerFound.EmployerId;
                 listing.EmployerName = employerFound.UserName;
+              
+               
 
                 _context.Listings.Add(listing);
                 await _context.SaveChangesAsync();

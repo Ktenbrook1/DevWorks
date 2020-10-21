@@ -10,24 +10,27 @@
 <h4>Message</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Contact">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group" style="width: 100%;height: 50%;">
                 <label asp-for="MessageToSend" class="control-label"></label>
-                <input asp-for="MessageToSend" class="form-control" />
+                <input type="text" asp-for="MessageToSend" class="form-control" />
                 <span asp-validation-for="MessageToSend" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="ListingId" class="control-label"></label>
-                <select asp-for="ListingId" class ="form-control" asp-items="ViewBag.ListingId"></select>
-            </div>
+            <label asp-for="ListingId" class="control-label"></label>
+            <select asp-for="ListingId" class ="form-control" asp-items="ViewBag.ListingId"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="DevloperId" class="control-label"></label>
+            <select asp-for="DevloperId" class ="form-control" asp-items="ViewBag.DevloperId"></select>
+        </div>*@
+            <input type="hidden" asp-for="ListingId" />
+            <input type="hidden" asp-for="DevloperId" />
+
             <div class="form-group">
-                <label asp-for="DevloperId" class="control-label"></label>
-                <select asp-for="DevloperId" class ="form-control" asp-items="ViewBag.DevloperId"></select>
-            </div>*@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Send" class="btn btn-primary" />
             </div>
         </form>
     </div>

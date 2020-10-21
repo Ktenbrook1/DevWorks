@@ -30,8 +30,10 @@ namespace DevWorksCapstone.Data
             .HasData(
             new IdentityRole
             {
+                Id = "23781239-0a44-4ab8-93c5-95ead3bc4db5",
                 Name = "Developer",
-                NormalizedName = "DEVELOPER"
+                NormalizedName = "DEVELOPER",
+                ConcurrencyStamp = "628985cd-3ff0-4c7b-abcd-eb7095f65ea7"
             }
              );
             base.OnModelCreating(builder);
@@ -39,8 +41,10 @@ namespace DevWorksCapstone.Data
             .HasData(
             new IdentityRole
             {
+                Id = "41ce790c-add9-4145-a486-a217804ab2e4",
                 Name = "Employer",
-                NormalizedName = "EMPLOYER"
+                NormalizedName = "EMPLOYER",
+                ConcurrencyStamp = "f94ac645-3fc0-4397-8062-b423c379fb35"
             }
             );
 

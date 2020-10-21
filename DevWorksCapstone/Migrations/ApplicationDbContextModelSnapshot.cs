@@ -182,6 +182,31 @@ namespace DevWorksCapstone.Migrations
                     b.ToTable("Listings");
                 });
 
+            modelBuilder.Entity("DevWorksCapstone.Models.Message", b =>
+                {
+                    b.Property<int>("MessageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DevloperId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ListingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MessageToSend")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MessageID");
+
+                    b.HasIndex("DevloperId");
+
+                    b.HasIndex("ListingId");
+
+                    b.ToTable("Message");
+                });
+
             modelBuilder.Entity("DevWorksCapstone.Models.Review", b =>
                 {
                     b.Property<int>("ReviewID")
@@ -259,15 +284,15 @@ namespace DevWorksCapstone.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "03710c69-41db-4f77-a2a3-56fa8386faa2",
-                            ConcurrencyStamp = "d5ceec89-477e-4988-bc8c-0588e8c998e1",
+                            Id = "23781239-0a44-4ab8-93c5-95ead3bc4db5",
+                            ConcurrencyStamp = "628985cd-3ff0-4c7b-abcd-eb7095f65ea7",
                             Name = "Developer",
                             NormalizedName = "DEVELOPER"
                         },
                         new
                         {
-                            Id = "28d835e9-eeb8-4fc5-95c4-558ee06e79ba",
-                            ConcurrencyStamp = "98a15728-4546-4648-879f-eacf3e210399",
+                            Id = "41ce790c-add9-4145-a486-a217804ab2e4",
+                            ConcurrencyStamp = "f94ac645-3fc0-4397-8062-b423c379fb35",
                             Name = "Employer",
                             NormalizedName = "EMPLOYER"
                         });
@@ -491,6 +516,21 @@ namespace DevWorksCapstone.Migrations
                     b.HasOne("DevWorksCapstone.Models.Employer", "Employer")
                         .WithMany()
                         .HasForeignKey("EmployerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DevWorksCapstone.Models.Message", b =>
+                {
+                    b.HasOne("DevWorksCapstone.Models.Developer", "Developer")
+                        .WithMany()
+                        .HasForeignKey("DevloperId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevWorksCapstone.Models.Listing", "Listing")
+                        .WithMany()
+                        .HasForeignKey("ListingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
