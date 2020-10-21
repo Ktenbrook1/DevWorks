@@ -331,17 +331,19 @@ namespace DevWorksCapstone.Controllers
             }
 
             var listing = await _context.Listings.FindAsync(id);
-            Message message = new Message();
-            message.ListingId = listing.ListingId;
-
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            message.DevloperId = loggedInDeveloper.DeveloperId;
-
             if (listing == null)
             {
                 return NotFound();
             }
+
+            Message message = new Message();
+            message.EmployerId = listing.EmployerId;
+            message.EmployerName = listing.EmployerName;
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            message.DeveloperId = loggedInDeveloper.DeveloperId;
+            message.DeveloperName = loggedInDeveloper.UserName;
            
             return View(message);
         }
@@ -349,10 +351,6 @@ namespace DevWorksCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(Message message)
         {
-            //get developer thats logged in
-            //get employer theyre trying to contact
-            //save the message to database
-            //log into employer and try to see the messages sent to you in a list that you can view/respond
             _context.Message.Add(message);
             await _context.SaveChangesAsync();
 
@@ -364,7 +362,7 @@ namespace DevWorksCapstone.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
-            var myMessage = _context.Message.Where(m => m.DevloperId == loggedInDeveloper.DeveloperId).ToList();
+            var myMessage = _context.Message.Where(m => m.DeveloperId == loggedInDeveloper.DeveloperId).ToList();
 
             //var listing = _context.Listings.Where(l => l.ListingId == message.ListingId).ToList();
 

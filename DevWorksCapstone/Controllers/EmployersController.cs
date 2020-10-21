@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using DevWorksCapstone.Data;
 using DevWorksCapstone.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevWorksCapstone.Controllers
 {
+    [Authorize(Roles = "Employer")]
     public class EmployersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -281,6 +283,46 @@ namespace DevWorksCapstone.Controllers
            //WILL NEED TO INCORPORATE RATINGS SOON
             
             return View(developers);
+        }
+
+        public async Task<IActionResult> Contact(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            Message message = new Message();
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            message.EmployerId= loggedInEmployer.EmployerId;
+            message.EmployerName = loggedInEmployer.CompanyName;
+
+            var DeveloperToContact = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
+            message.DeveloperId = DeveloperToContact.DeveloperId;
+            message.DeveloperName = DeveloperToContact.UserName;
+
+            return View(message);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(Message message)
+        {
+            _context.Message.Add(message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Messages));
+        }
+        public async Task<IActionResult> Messages()
+        {
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            var myMessage = _context.Message.Where(m => m.EmployerId == loggedInEmployer.EmployerId).ToList();
+
+            return View(myMessage);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<DevWorksCapstone.Models.Message>
-@*ForEmployers*@
+@*For Developers*@
 @{
     ViewData["Title"] = "Messages";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,17 +14,11 @@
                 @Html.DisplayNameFor(model => model.MessageToSend)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmployerName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeveloperName)
-            </th>
-            @*<th>
                 @Html.DisplayNameFor(model => model.Employer)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Developer)
-            </th>*@
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -40,15 +34,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DeveloperName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Employer.EmployerId)
-            </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Developer.DeveloperId)
-            </td>*@
-        <td>
-            <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>
-        </td>
+                <a asp-action="Edit" asp-route-id="@item.MessageID">Edit</a>
+           
+            </td>
         </tr>
 }
     </tbody>

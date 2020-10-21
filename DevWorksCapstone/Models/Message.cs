@@ -11,14 +11,17 @@ namespace DevWorksCapstone.Models
     {
         [Key]
         public int MessageID { get; set; }
-        public string MessageToSend { get; set; }
+        [Display(Name ="Message")]
+        public string MessageToSend { get; set; }     
+        public string EmployerName { get; set; } 
+        public string DeveloperName { get; set; }
 
-        [ForeignKey("Listing")]
-        public int ListingId { get; set; }
-        public Listing Listing { get; set; }
+        [ForeignKey("Employer")]
+        public int EmployerId { get; set; }
+        public Employer Employer { get; set; }
 
         [ForeignKey("Developer")]
-        public int DevloperId { get; set; }
+        public int DeveloperId { get; set; }
         public Developer Developer { get; set; }
     }
 }

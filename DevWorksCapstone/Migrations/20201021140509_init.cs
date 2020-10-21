@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DevWorksCapstone.Migrations
 {
-    public partial class inir : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -281,6 +281,33 @@ namespace DevWorksCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    MessageID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MessageToSend = table.Column<string>(nullable: true),
+                    EmployerId = table.Column<int>(nullable: false),
+                    DeveloperId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.MessageID);
+                    table.ForeignKey(
+                        name: "FK_Message_Developers_DeveloperId",
+                        column: x => x.DeveloperId,
+                        principalTable: "Developers",
+                        principalColumn: "DeveloperId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_Employers_EmployerId",
+                        column: x => x.EmployerId,
+                        principalTable: "Employers",
+                        principalColumn: "EmployerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -327,33 +354,6 @@ namespace DevWorksCapstone.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmployersWantedAbilities_Listings_ListingId",
-                        column: x => x.ListingId,
-                        principalTable: "Listings",
-                        principalColumn: "ListingId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Message",
-                columns: table => new
-                {
-                    MessageID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MessageToSend = table.Column<string>(nullable: true),
-                    ListingId = table.Column<int>(nullable: false),
-                    DevloperId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Message", x => x.MessageID);
-                    table.ForeignKey(
-                        name: "FK_Message_Developers_DevloperId",
-                        column: x => x.DevloperId,
-                        principalTable: "Developers",
-                        principalColumn: "DeveloperId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Message_Listings_ListingId",
                         column: x => x.ListingId,
                         principalTable: "Listings",
                         principalColumn: "ListingId",
@@ -445,14 +445,14 @@ namespace DevWorksCapstone.Migrations
                 column: "EmployerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_DevloperId",
+                name: "IX_Message_DeveloperId",
                 table: "Message",
-                column: "DevloperId");
+                column: "DeveloperId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ListingId",
+                name: "IX_Message_EmployerId",
                 table: "Message",
-                column: "ListingId");
+                column: "EmployerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_DevloperId",

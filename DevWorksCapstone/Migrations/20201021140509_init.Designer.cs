@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevWorksCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201020191605_inir")]
-    partial class inir
+    [Migration("20201021140509_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -191,10 +191,10 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DevloperId")
+                    b.Property<int>("DeveloperId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ListingId")
+                    b.Property<int>("EmployerId")
                         .HasColumnType("int");
 
                     b.Property<string>("MessageToSend")
@@ -202,9 +202,9 @@ namespace DevWorksCapstone.Migrations
 
                     b.HasKey("MessageID");
 
-                    b.HasIndex("DevloperId");
+                    b.HasIndex("DeveloperId");
 
-                    b.HasIndex("ListingId");
+                    b.HasIndex("EmployerId");
 
                     b.ToTable("Message");
                 });
@@ -526,13 +526,13 @@ namespace DevWorksCapstone.Migrations
                 {
                     b.HasOne("DevWorksCapstone.Models.Developer", "Developer")
                         .WithMany()
-                        .HasForeignKey("DevloperId")
+                        .HasForeignKey("DeveloperId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DevWorksCapstone.Models.Listing", "Listing")
+                    b.HasOne("DevWorksCapstone.Models.Employer", "Employer")
                         .WithMany()
-                        .HasForeignKey("ListingId")
+                        .HasForeignKey("EmployerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
