@@ -356,27 +356,30 @@ namespace DevWorksCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Hire(Developer developer)
         {
-            //_context.Teams.Add(developer);
-            //await _context.SaveChangesAsync();
+            var listing = _context.Listings.Where(l => l.ListingId == developer.MyLisitng).SingleOrDefault();
+            var teamHaveListing = _context.Teams.Where(t => t.ListingId == listing.ListingId).SingleOrDefault();
+            var developerToContract = _context.Developers.Where(d => d.DeveloperId == developer.DeveloperId).SingleOrDefault();
 
-            return RedirectToAction(nameof(Messages));
+            if (teamHaveListing != null)
+            {
+                //add developer to existing Team
+                teamHaveListing.ListingId = listing.ListingId;
+                teamHaveListing.DevloperId = developerToContract.DeveloperId;
+                _context.Teams.Add(teamHaveListing);
+            }
+            else
+            {
+                Team team = new Team();
+                team.ListingId = listing.ListingId;
+                team.DevloperId = developerToContract.DeveloperId;
+                _context.Teams.Add(team);
+            }
+            return RedirectToAction(nameof(Team));
         }
-        //public IList<SelectListItem> GetAllListings()
-        //{
-        //    var allListings = _context.Listings.ToList();
-        //    List<SelectListItem> listingsAsSelectListItems = new List<SelectListItem>();
 
-        //    foreach (Listing listing in allListings)
-        //    {
-        //        SelectListItem Listing = new SelectListItem()
-        //        {
-        //            Text = Listing.,
-        //            Value = ability.AbilityName
-        //        };
-
-        //        abilitiesAsSelectListItems.Add(abilityItem);
-        //    }
-        //    return abilitiesAsSelectListItems;
-        //}
+        public async Task<IActionResult> Team(int? id)
+        {
+            return View();
+        }
     }
 }

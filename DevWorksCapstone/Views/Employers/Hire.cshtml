@@ -47,44 +47,35 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IsInContract)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdentityUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdentityUser.Id)
-        </dd>
-        <div class="form-group">
-            <label asp-for="ListingsForEmp"></label>
-            <select asp-for="ListingsForEmp" class="form-control" asp-items="@Model.ListingsForEmp"></select>
-            <span asp-validation-for="ListingsForEmp" class="text-danger"></span>
-        </div>
-        <div class="container my-3">
-            Their Abilities:
-            @using (Html.BeginForm("Index", "Home"))
-            {
-                foreach (var item in Model.SelectedAbilities)
+    </dl>
+</div>
+        <form asp-action="Hire">
+            <div class="form-group">
+                <input type="hidden" asp-for="DeveloperId" />
+                <label asp-for="ListingsForEmp"></label>
+                <select asp-for="MyLisitng" class="form-control" asp-items="@Model.ListingsForEmp"></select>
+                <span asp-validation-for="ListingsForEmp" class="text-danger"></span>                
+            </div>
+            <div class="container my-3">
+                Their Abilities:
+                @using (Html.BeginForm("Index", "Home"))
                 {
-                    <div>
-                        <label>
-                            <dt class="col-sm-8">
-                                @Html.DisplayFor(model => model.SelectedAbilities)
-                            </dt>
-                        </label>
-                    </div>
-                }
-                foreach (var listing in Model.Listings)
-                {
-                    <div>
-
-                    </div>
+                    foreach (var item in Model.SelectedAbilities)
+                    {
+                        <div>
+                            <label>
+                                <dt class="col-sm-8">
+                                    @Html.DisplayFor(model => model.SelectedAbilities)
+                                </dt>
+                            </label>
+                        </div>
+                    }
                 }
                 <div class="form-group text-center">
                     <input type="submit" class="btn btn-primary" style="float:left; margin: 20px 0 20px 0; " value="Hire" />
                 </div>
-            }
-        </div>
-    </dl>
-</div>
+            </div>          
+        </form>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.DeveloperId">Edit</a> |
     <a asp-action="Index">Back to List</a>

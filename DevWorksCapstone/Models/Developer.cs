@@ -31,6 +31,8 @@ namespace DevWorksCapstone.Models
         public IEnumerable<Listing> Listings { get; set; }
         [NotMapped]
         public SelectList ListingsForEmp { get; set; }
+        [NotMapped]
+        public int MyLisitng { get; set; }
 
         public Developer()
         {
