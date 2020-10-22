@@ -64,13 +64,6 @@ namespace DevWorksCapstone.Controllers
             List<Listing> PotentialMatch = new List<Listing>();
             foreach (var listing in allListings)
             {
-                //for each over all listings and get there employer desired skills
-
-                //then for each over every skill and line them up with the developers skills
-
-                // add them to the seperate list
-
-                //at the end for loop over each list to make one big list that displays in order of best fit for the developer
                 List<Listing> currentListing = _context.Listings.Where(l => l.ListingId == listing.ListingId).ToList();
 
                 currentListing[0].SelectedAbilities = _context.EmployersWantedAbilities

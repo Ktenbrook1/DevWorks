@@ -27,6 +27,11 @@ namespace DevWorksCapstone.Models
         public IList<SelectListItem> AllAbilities { get; set; }
         [NotMapped]
         public IList<Message> Messages { get; set; }
+        [NotMapped]
+        public IEnumerable<Listing> Listings { get; set; }
+        [NotMapped]
+        public SelectList ListingsForEmp { get; set; }
+
         public Developer()
         {
             SelectedAbilities = new List<string>();

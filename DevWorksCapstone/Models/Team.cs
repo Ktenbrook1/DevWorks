@@ -15,5 +15,9 @@ namespace DevWorksCapstone.Models
         [ForeignKey("Developer")]
         public int DevloperId { get; set; }
         public Developer Developer { get; set; }
+
+        [ForeignKey("Listing")]
+        public int ListingId { get; set; }
+        public Listing Listing { get; set; }
     }
 }

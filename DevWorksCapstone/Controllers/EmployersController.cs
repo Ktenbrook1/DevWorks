@@ -297,7 +297,7 @@ namespace DevWorksCapstone.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             message.EmployerId= loggedInEmployer.EmployerId;
-            message.EmployerName = loggedInEmployer.CompanyName;
+            message.EmployerName = loggedInEmployer.UserName;
 
             var DeveloperToContact = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
             message.DeveloperId = DeveloperToContact.DeveloperId;
@@ -316,7 +316,6 @@ namespace DevWorksCapstone.Controllers
         }
         public async Task<IActionResult> Messages()
         {
-
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
@@ -324,5 +323,60 @@ namespace DevWorksCapstone.Controllers
 
             return View(myMessage);
         }
+
+        public async Task<IActionResult> Hire(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            var DeveloperToContract = _context.Developers.Where(d => d.DeveloperId == id).ToList();
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            DeveloperToContract[0].SelectedAbilities = _context.DeveloperAbilities
+              .Where(da => da.DeveloperId == DeveloperToContract[0].DeveloperId)
+              .Select(da => da.Ability.AbilityName)
+              .ToList();
+
+            var arrayOfStringAbilities = DeveloperToContract[0].SelectedAbilities;
+            var theDeveloper = DeveloperToContract[0];
+
+            var allListing = _context.Listings.Where(l => l.EmployerId == loggedInEmployer.EmployerId);
+            theDeveloper.Listings = allListing;
+
+            var listings = theDeveloper.Listings;
+            theDeveloper.ListingsForEmp = new SelectList(listings, "ListingId", "Description");
+            return View(theDeveloper);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Hire(Developer developer)
+        {
+            //_context.Teams.Add(developer);
+            //await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Messages));
+        }
+        //public IList<SelectListItem> GetAllListings()
+        //{
+        //    var allListings = _context.Listings.ToList();
+        //    List<SelectListItem> listingsAsSelectListItems = new List<SelectListItem>();
+
+        //    foreach (Listing listing in allListings)
+        //    {
+        //        SelectListItem Listing = new SelectListItem()
+        //        {
+        //            Text = Listing.,
+        //            Value = ability.AbilityName
+        //        };
+
+        //        abilitiesAsSelectListItems.Add(abilityItem);
+        //    }
+        //    return abilitiesAsSelectListItems;
+        //}
     }
 }

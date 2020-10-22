@@ -1,0 +1,91 @@
+﻿@model DevWorksCapstone.Models.Developer
+
+@{
+    ViewData["Title"] = "Hire";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Hire</h1>
+
+<div>
+    <h4>Developer</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GitHubLink)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GitHubLink)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProfileImgURL)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProfileImgURL)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bio)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RatePerHr)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RatePerHr)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsInContract)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsInContract)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdentityUser)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdentityUser.Id)
+        </dd>
+        <div class="form-group">
+            <label asp-for="ListingsForEmp"></label>
+            <select asp-for="ListingsForEmp" class="form-control" asp-items="@Model.ListingsForEmp"></select>
+            <span asp-validation-for="ListingsForEmp" class="text-danger"></span>
+        </div>
+        <div class="container my-3">
+            Their Abilities:
+            @using (Html.BeginForm("Index", "Home"))
+            {
+                foreach (var item in Model.SelectedAbilities)
+                {
+                    <div>
+                        <label>
+                            <dt class="col-sm-8">
+                                @Html.DisplayFor(model => model.SelectedAbilities)
+                            </dt>
+                        </label>
+                    </div>
+                }
+                foreach (var listing in Model.Listings)
+                {
+                    <div>
+
+                    </div>
+                }
+                <div class="form-group text-center">
+                    <input type="submit" class="btn btn-primary" style="float:left; margin: 20px 0 20px 0; " value="Hire" />
+                </div>
+            }
+        </div>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.DeveloperId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

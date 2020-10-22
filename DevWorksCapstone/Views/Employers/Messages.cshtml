@@ -47,7 +47,8 @@
                 @Html.DisplayFor(modelItem => item.Developer.DeveloperId)
             </td>*@
         <td>
-            <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>
+            <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>|
+            <a asp-action="Hire" asp-route-id="@item.DeveloperId">Hire</a>
         </td>
         </tr>
 }
