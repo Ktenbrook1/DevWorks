@@ -365,21 +365,43 @@ namespace DevWorksCapstone.Controllers
                 //add developer to existing Team
                 teamHaveListing.ListingId = listing.ListingId;
                 teamHaveListing.DevloperId = developerToContract.DeveloperId;
+                developer.IsInContract = true;
                 _context.Teams.Add(teamHaveListing);
+                await _context.SaveChangesAsync();
             }
             else
             {
                 Team team = new Team();
                 team.ListingId = listing.ListingId;
                 team.DevloperId = developerToContract.DeveloperId;
+                developer.IsInContract = true;
                 _context.Teams.Add(team);
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Team));
         }
 
         public async Task<IActionResult> Team(int? id)
         {
-            return View();
+            var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
+            var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
+            List<Developer> findDev = new List<Developer>();
+            try {
+                var DevsOnTeam = _context.Teams.Where(t => t.DevloperId == Team.DevloperId).ToList();
+
+                foreach (var devOnTeam in DevsOnTeam)
+                {
+                    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DevloperId).SingleOrDefault();
+                    findDev.Add(aDev);
+                }
+            }
+            catch
+            {
+
+            }
+          
+
+            return View(findDev);
         }
     }
 }
