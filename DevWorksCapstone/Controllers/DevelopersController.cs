@@ -323,21 +323,19 @@ namespace DevWorksCapstone.Controllers
                 return NotFound();
             }
 
-            var listing = await _context.Listings.FindAsync(id);
-            if (listing == null)
-            {
-                return NotFound();
-            }
-
             Message message = new Message();
-            message.EmployerId = listing.EmployerId;
-            message.EmployerName = listing.EmployerName;
+
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            var loggedInDeveloper = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
             message.DeveloperId = loggedInDeveloper.DeveloperId;
             message.DeveloperName = loggedInDeveloper.UserName;
-           
+
+
+            var EmployerToContact = _context.Employers.Where(e => e.EmployerId == id).SingleOrDefault();
+            message.EmployerId = EmployerToContact.EmployerId;
+            message.EmployerName = EmployerToContact.UserName;
+
             return View(message);
         }
         [HttpPost]

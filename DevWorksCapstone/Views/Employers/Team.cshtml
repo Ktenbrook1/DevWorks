@@ -17,20 +17,9 @@
                 @Html.DisplayNameFor(model => model.GitHubLink)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProfileImgURL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RatePerHr)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.IsInContract)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdentityUser)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -44,22 +33,11 @@
                 @Html.DisplayFor(modelItem => item.GitHubLink)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProfileImgURL)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RatePerHr)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.IsInContract)
             </td>
+        
             <td>
-                @Html.DisplayFor(modelItem => item.IdentityUser.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DeveloperId">Edit</a> 
+                <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a> 
             </td>
         </tr>
 }
