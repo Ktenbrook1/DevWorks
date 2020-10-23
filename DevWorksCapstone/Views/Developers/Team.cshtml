@@ -1,0 +1,78 @@
+﻿@model IEnumerable<DevWorksCapstone.Models.Developer>
+
+@{
+    ViewData["Title"] = "Team";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Team</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GitHubLink)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileImgURL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RatePerHr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInContract)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdentityUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GitHubLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfileImgURL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RatePerHr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsInContract)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdentityUser.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DeveloperId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DeveloperId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DeveloperId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

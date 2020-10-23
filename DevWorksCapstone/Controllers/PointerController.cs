@@ -10,10 +10,10 @@ using SQLitePCL;
 
 namespace DevWorksCapstone.Controllers
 {
-    public class MessagesController : Controller
+    public class PointerController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public MessagesController(ApplicationDbContext context)
+        public PointerController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -48,6 +48,22 @@ namespace DevWorksCapstone.Controllers
                 return RedirectToAction("HomePage", "Developers");
             }
 
+        }
+
+        public IActionResult TeamPage()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Employer employerLoggedIn = _context.Employers.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+            var developerLoggedIn = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
+
+            if (employerLoggedIn != null)
+            {
+                return RedirectToAction("Team", "Employers");
+            }
+            else
+            {
+                return RedirectToAction("Team", "Developers");
+            }
         }
     }
 }

@@ -11,6 +11,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Mail;
 using System.Net;
+using DevWorksCapstone.Models.MyAPIKeys;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DevWorksCapstone.Controllers
 {
@@ -304,11 +306,12 @@ namespace DevWorksCapstone.Controllers
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             message.EmployerId= loggedInEmployer.EmployerId;
             message.EmployerName = loggedInEmployer.UserName;
-            //message.EmployerEmail = loggedInEmployer.
+            message.EmployerEmail = loggedInEmployer.Email;
 
             var DeveloperToContact = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
             message.DeveloperId = DeveloperToContact.DeveloperId;
             message.DeveloperName = DeveloperToContact.UserName;
+            message.DeveloperEmail = DeveloperToContact.Email;
 
             return View(message);
         }
@@ -316,31 +319,6 @@ namespace DevWorksCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(Message message)
         {
-
-            var fromAddress = new MailAddress("from@gmail.com", "From Name");
-            var toAddress = new MailAddress("to@example.com", "To Name");
-            const string fromPassword = "fromPassword";
-            const string subject = "Subject";
-            const string body = "Body";
-
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message2 = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message2);
-            }
-
             _context.Message.Add(message);
             await _context.SaveChangesAsync();
 
@@ -412,21 +390,55 @@ namespace DevWorksCapstone.Controllers
                 _context.Teams.Add(team);
                 await _context.SaveChangesAsync();
             }
+            SendEmail(developer);
+
             return RedirectToAction(nameof(Index));
         }
+        public void SendEmail(Developer developer)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
+            var fromEmail = loggedInEmployer.Email;
+            var toEmail = developer.Email;
+            var fromAddress = new MailAddress(fromEmail, loggedInEmployer.UserName);
+            var toAddress = new MailAddress(toEmail, developer.UserName);
+            string fromPassword = MyKeys.passcode;
+            const string subject = "Hired In Devworks";
+            string body = "Congradulations " + loggedInEmployer.UserName + " Has Hired you for contract at " + loggedInEmployer.CompanyName + "!";
+
+            SmtpClient smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
+                Timeout = 20000
+            };
+            using (var message2 = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message2);
+            }
+        }
+       
         public async Task<IActionResult> Team(int? id)
         {
             var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
             var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
             List<Developer> findDev = new List<Developer>();
-            try {
+            try
+            {
                 var DevsOnTeam = _context.Teams.Where(t => t.TeamId == Team.TeamId).ToList();
 
                 foreach (var devOnTeam in DevsOnTeam)
                 {
                     var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DevloperId).SingleOrDefault();
-                 
+
                     findDev.Add(aDev);
                 }
             }
@@ -434,7 +446,7 @@ namespace DevWorksCapstone.Controllers
             {
 
             }
-          
+
 
             return View(findDev);
         }

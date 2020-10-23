@@ -35,10 +35,4 @@
     </Compile>
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="credentials.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>

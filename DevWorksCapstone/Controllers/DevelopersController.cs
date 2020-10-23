@@ -359,5 +359,26 @@ namespace DevWorksCapstone.Controllers
 
             return View(myMessage);
         }
+        //Takes in a listing Id so I will have to revise this
+        //public async Task<IActionResult> Team(int? id)
+        //{
+        //    var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
+        //    var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
+        //    List<Developer> findDev = new List<Developer>();
+        //    try
+        //    {
+        //        var DevsOnTeam = _context.Teams.Where(t => t.TeamId == Team.TeamId).ToList();
+
+        //        foreach (var devOnTeam in DevsOnTeam)
+        //        {
+        //            var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DevloperId).SingleOrDefault();
+
+        //            findDev.Add(aDev);
+        //        }
+        //    }
+        //    catch { }
+            
+        //    return View(findDev);
+        //}
     }
 }
