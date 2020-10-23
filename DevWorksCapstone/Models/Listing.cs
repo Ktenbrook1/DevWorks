@@ -13,8 +13,8 @@ namespace DevWorksCapstone.Models
         [Key]
         public int ListingId { get; set; }
         public string Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public double RateLookingFor { get; set; }
         public int PositionsOpen { get; set; }
 
@@ -33,6 +33,29 @@ namespace DevWorksCapstone.Models
         public Employer Employer { get; set; }
 
         public string EmployerName { get; set; }
+
+        public DateTime DateStarting
+        {
+            get
+            {
+                return this.StartDate.HasValue
+                   ? this.StartDate.Value
+                   : DateTime.Now;
+            }
+
+            set { this.StartDate = value; }
+        }
+        public DateTime DateEnding
+        {
+            get
+            {
+                return this.EndDate.HasValue
+                   ? this.EndDate.Value
+                   : DateTime.Now;
+            }
+
+            set { this.EndDate = value; }
+        }
 
         public ICollection<EmployersWantedAbilities> EmployersWantedAbilities { get; set; }
     }

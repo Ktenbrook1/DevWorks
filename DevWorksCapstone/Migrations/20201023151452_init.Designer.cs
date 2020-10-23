@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevWorksCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201021140509_init")]
+    [Migration("20201023151452_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,9 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("GitHubLink")
                         .HasColumnType("nvarchar(max)");
 
@@ -118,6 +121,9 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -156,6 +162,12 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DateEnding")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateStarting")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -165,7 +177,7 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("EmployerName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PositionsOpen")
@@ -174,7 +186,7 @@ namespace DevWorksCapstone.Migrations
                     b.Property<double>("RateLookingFor")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ListingId");
@@ -191,11 +203,23 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DeveloperEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DeveloperId")
                         .HasColumnType("int");
 
+                    b.Property<string>("DeveloperName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployerEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EmployerId")
                         .HasColumnType("int");
+
+                    b.Property<string>("EmployerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MessageToSend")
                         .HasColumnType("nvarchar(max)");
@@ -250,9 +274,14 @@ namespace DevWorksCapstone.Migrations
                     b.Property<int>("DevloperId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ListingId")
+                        .HasColumnType("int");
+
                     b.HasKey("TeamId");
 
                     b.HasIndex("DevloperId");
+
+                    b.HasIndex("ListingId");
 
                     b.ToTable("Teams");
                 });
@@ -557,6 +586,12 @@ namespace DevWorksCapstone.Migrations
                     b.HasOne("DevWorksCapstone.Models.Developer", "Developer")
                         .WithMany()
                         .HasForeignKey("DevloperId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevWorksCapstone.Models.Listing", "Listing")
+                        .WithMany()
+                        .HasForeignKey("ListingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

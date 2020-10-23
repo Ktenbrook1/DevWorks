@@ -19,9 +19,9 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate.Date" class="control-label"></label>
-                <input asp-for="StartDate.Date" class="form-control" />
-                <span asp-validation-for="StartDate.Date" class="text-danger"></span>
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
@@ -38,6 +38,7 @@
                 <input asp-for="PositionsOpen" class="form-control" />
                 <span asp-validation-for="PositionsOpen" class="text-danger"></span>
             </div>
+         
             @*<div class="form-group">
                 <label asp-for="EmployerId" class="control-label"></label>
                 <select asp-for="EmployerId" class ="form-control" asp-items="ViewBag.EmployerId"></select>

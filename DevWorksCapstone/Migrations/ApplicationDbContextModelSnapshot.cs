@@ -66,6 +66,9 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("GitHubLink")
                         .HasColumnType("nvarchar(max)");
 
@@ -116,6 +119,9 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -154,6 +160,12 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DateEnding")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateStarting")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -163,7 +175,7 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("EmployerName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PositionsOpen")
@@ -172,7 +184,7 @@ namespace DevWorksCapstone.Migrations
                     b.Property<double>("RateLookingFor")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ListingId");
@@ -189,10 +201,16 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DeveloperEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DeveloperId")
                         .HasColumnType("int");
 
                     b.Property<string>("DeveloperName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployerEmail")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployerId")

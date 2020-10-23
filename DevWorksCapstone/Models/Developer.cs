@@ -13,6 +13,7 @@ namespace DevWorksCapstone.Models
     {
         [Key]
         public int DeveloperId { get; set; }
+        public string Email { get; set; }
         public string UserName { get; set; }
         public string GitHubLink { get; set; }
         public string ProfileImgURL { get; set; }

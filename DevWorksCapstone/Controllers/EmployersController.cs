@@ -9,6 +9,8 @@ using DevWorksCapstone.Data;
 using DevWorksCapstone.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mail;
+using System.Net;
 
 namespace DevWorksCapstone.Controllers
 {
@@ -302,6 +304,7 @@ namespace DevWorksCapstone.Controllers
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             message.EmployerId= loggedInEmployer.EmployerId;
             message.EmployerName = loggedInEmployer.UserName;
+            //message.EmployerEmail = loggedInEmployer.
 
             var DeveloperToContact = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
             message.DeveloperId = DeveloperToContact.DeveloperId;
@@ -313,6 +316,31 @@ namespace DevWorksCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(Message message)
         {
+
+            var fromAddress = new MailAddress("from@gmail.com", "From Name");
+            var toAddress = new MailAddress("to@example.com", "To Name");
+            const string fromPassword = "fromPassword";
+            const string subject = "Subject";
+            const string body = "Body";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message2 = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message2);
+            }
+
             _context.Message.Add(message);
             await _context.SaveChangesAsync();
 

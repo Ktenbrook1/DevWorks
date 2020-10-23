@@ -12,6 +12,7 @@ namespace DevWorksCapstone.Models
     {
         [Key]
         public int EmployerId { get; set; }
+        public string Email { get; set; }
         public string UserName { get; set; }
         public string CompanyName { get; set; }
         public string ProfileImgURL { get; set; }

@@ -15,6 +15,8 @@ namespace DevWorksCapstone.Models
         public string MessageToSend { get; set; }     
         public string EmployerName { get; set; } 
         public string DeveloperName { get; set; }
+        public string EmployerEmail { get; set; }
+        public string DeveloperEmail { get; set; }
 
         [ForeignKey("Employer")]
         public int EmployerId { get; set; }

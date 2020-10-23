@@ -171,6 +171,7 @@ namespace DevWorksCapstone.Migrations
                 {
                     DeveloperId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     GitHubLink = table.Column<string>(nullable: true),
                     ProfileImgURL = table.Column<string>(nullable: true),
@@ -196,6 +197,7 @@ namespace DevWorksCapstone.Migrations
                 {
                     EmployerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     CompanyName = table.Column<string>(nullable: true),
                     ProfileImgURL = table.Column<string>(nullable: true),
@@ -237,37 +239,20 @@ namespace DevWorksCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Teams",
-                columns: table => new
-                {
-                    TeamId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DevloperId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teams", x => x.TeamId);
-                    table.ForeignKey(
-                        name: "FK_Teams_Developers_DevloperId",
-                        column: x => x.DevloperId,
-                        principalTable: "Developers",
-                        principalColumn: "DeveloperId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Listings",
                 columns: table => new
                 {
                     ListingId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(nullable: true),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: true),
+                    EndDate = table.Column<DateTime>(nullable: true),
                     RateLookingFor = table.Column<double>(nullable: false),
                     PositionsOpen = table.Column<int>(nullable: false),
                     EmployerId = table.Column<int>(nullable: false),
-                    EmployerName = table.Column<string>(nullable: true)
+                    EmployerName = table.Column<string>(nullable: true),
+                    DateStarting = table.Column<DateTime>(nullable: false),
+                    DateEnding = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -287,6 +272,10 @@ namespace DevWorksCapstone.Migrations
                     MessageID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MessageToSend = table.Column<string>(nullable: true),
+                    EmployerName = table.Column<string>(nullable: true),
+                    DeveloperName = table.Column<string>(nullable: true),
+                    EmployerEmail = table.Column<string>(nullable: true),
+                    DeveloperEmail = table.Column<string>(nullable: true),
                     EmployerId = table.Column<int>(nullable: false),
                     DeveloperId = table.Column<int>(nullable: false)
                 },
@@ -354,6 +343,32 @@ namespace DevWorksCapstone.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmployersWantedAbilities_Listings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "Listings",
+                        principalColumn: "ListingId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teams",
+                columns: table => new
+                {
+                    TeamId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DevloperId = table.Column<int>(nullable: false),
+                    ListingId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.TeamId);
+                    table.ForeignKey(
+                        name: "FK_Teams_Developers_DevloperId",
+                        column: x => x.DevloperId,
+                        principalTable: "Developers",
+                        principalColumn: "DeveloperId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Teams_Listings_ListingId",
                         column: x => x.ListingId,
                         principalTable: "Listings",
                         principalColumn: "ListingId",
@@ -468,6 +483,11 @@ namespace DevWorksCapstone.Migrations
                 name: "IX_Teams_DevloperId",
                 table: "Teams",
                 column: "DevloperId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_ListingId",
+                table: "Teams",
+                column: "ListingId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -509,10 +529,10 @@ namespace DevWorksCapstone.Migrations
                 name: "Abilities");
 
             migrationBuilder.DropTable(
-                name: "Listings");
+                name: "Developers");
 
             migrationBuilder.DropTable(
-                name: "Developers");
+                name: "Listings");
 
             migrationBuilder.DropTable(
                 name: "Employers");
