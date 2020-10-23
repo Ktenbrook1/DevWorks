@@ -58,11 +58,27 @@ namespace DevWorksCapstone.Controllers
 
             if (employerLoggedIn != null)
             {
-                return RedirectToAction("Team", "Employers");
+                return RedirectToAction("Teams", "Employers");
             }
             else
             {
                 return RedirectToAction("Team", "Developers");
+            }
+        }
+
+        public IActionResult Profile()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Employer employerLoggedIn = _context.Employers.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+            var developerLoggedIn = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
+
+            if (employerLoggedIn != null)
+            {
+                return RedirectToAction("Index", "Employers");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Developers");
             }
         }
     }

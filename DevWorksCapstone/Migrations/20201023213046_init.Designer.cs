@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevWorksCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201023151452_init")]
+    [Migration("20201023213046_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -189,6 +189,9 @@ namespace DevWorksCapstone.Migrations
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ListingId");
 
                     b.HasIndex("EmployerId");
@@ -276,6 +279,9 @@ namespace DevWorksCapstone.Migrations
 
                     b.Property<int>("ListingId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TeamName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TeamId");
 

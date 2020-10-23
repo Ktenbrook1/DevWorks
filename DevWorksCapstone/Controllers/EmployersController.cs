@@ -375,6 +375,7 @@ namespace DevWorksCapstone.Controllers
                 //add developer to existing Team
                 teamHaveListing.ListingId = listing.ListingId;
                 teamHaveListing.DevloperId = developer.DeveloperId;
+                teamHaveListing.TeamIsAlive = true;
                 developer.IsInContract = true;
                 _context.Update(developer);
                 _context.Teams.Add(teamHaveListing);
@@ -385,6 +386,7 @@ namespace DevWorksCapstone.Controllers
                 Team team = new Team();
                 team.ListingId = listing.ListingId;
                 team.DevloperId = developer.DeveloperId;
+                teamHaveListing.TeamIsAlive = true;
                 developer.IsInContract = true;
                 _context.Update(developer);
                 _context.Teams.Add(team);
@@ -446,9 +448,48 @@ namespace DevWorksCapstone.Controllers
             {
 
             }
-
-
             return View(findDev);
+        }
+        public async Task<IActionResult> Teams()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            var findAllTeams = _context.Teams.Where(t => t.Listing.EmployerId == loggedInEmployer.EmployerId).SingleOrDefault();
+            if(findAllTeams == null)
+            {
+                List<Team> team = new List<Team>();
+                return View(team);
+            }
+            return View(findAllTeams);
+        }
+        public async Task<IActionResult> EndTeamEarly(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var team = await _context.Teams.Where(t => t.ListingId == id).SingleAsync();
+            if (team == null)
+            {
+                return NotFound();
+            }
+
+            return View(team);
+        }
+        [HttpPost, ActionName("EndTeamEarly")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EndTeamEarly(int id)
+        {
+            var team = await _context.Teams.FindAsync(id);
+            _context.Teams.Remove(team);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(PleaseRate));
+        }
+        public async Task<IActionResult> PleaseRate()
+        {
+            return View();
         }
     }
 }

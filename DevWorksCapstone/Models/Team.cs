@@ -11,6 +11,8 @@ namespace DevWorksCapstone.Models
     {
         [Key]
         public int TeamId { get; set; }
+        public string TeamName { get; set; }
+        public bool TeamIsAlive { get; set; }
 
         [ForeignKey("Developer")]
         public int DevloperId { get; set; }

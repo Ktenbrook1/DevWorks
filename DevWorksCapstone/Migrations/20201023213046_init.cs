@@ -244,6 +244,7 @@ namespace DevWorksCapstone.Migrations
                 {
                     ListingId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: true),
                     EndDate = table.Column<DateTime>(nullable: true),
@@ -355,6 +356,7 @@ namespace DevWorksCapstone.Migrations
                 {
                     TeamId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    TeamName = table.Column<string>(nullable: true),
                     DevloperId = table.Column<int>(nullable: false),
                     ListingId = table.Column<int>(nullable: false)
                 },

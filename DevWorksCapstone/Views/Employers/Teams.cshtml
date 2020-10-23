@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DevWorksCapstone.Models.Team>
+
+@{
+    ViewData["Title"] = "Teams";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Teams</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamName)
+            </th>
+            <th> View Team</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamName)
+            </td>
+            <td>
+                <a asp-action="Team" asp-route-id="@item.ListingId">View</a> | 
+                <a asp-action="EndTeamEarly" asp-route-id="@item.ListingId">End Team</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
