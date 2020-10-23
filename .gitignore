@@ -5,6 +5,8 @@
 
 # My API Keys
 *MyKeys.cs
+*credentials.json
+
 
 # User-specific files
 *.rsuser
