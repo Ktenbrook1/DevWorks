@@ -475,23 +475,23 @@ namespace DevWorksCapstone.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.Where(t => t.ListingId == id).SingleAsync();
+            var team = await _context.Teams.Where(t => t.TeamId == id).SingleAsync();
             if (team == null)
             {
                 return NotFound();
             }
 
-            var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
-            var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
+            //var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
+            //var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
             List<Developer> findDev = new List<Developer>();
             try
             {
-                var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == Team.TeamId).ToList();
+                var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == team.TeamId).ToList();
 
                 foreach (var devOnTeam in DevsOnTeam)
                 {
                     var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
-
+                    
                     findDev.Add(aDev);
                 }
             }
@@ -501,20 +501,32 @@ namespace DevWorksCapstone.Controllers
             }
             return View(findDev);
         }
-
-        [HttpPost, ActionName("EndTeamEarly")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EndTeamEarly(int id)
-        {
-            //var team = await _context.Teams.FindAsync(id);
-            //_context.Teams.Remove(team);
-            //await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(PleaseRateDevs));
-        }
         public async Task<IActionResult> MakeReview(int? id)
         {
             var findDev = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
-            return View(findDev);
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            var teamOfCurrentDev = _context.TeamOfDevs.Where(tod => tod.DeveloperId == findDev.DeveloperId).SingleOrDefault();
+           
+            Review review = new Review();
+            review.DevloperId = findDev.DeveloperId;
+            review.TeamId = teamOfCurrentDev.TeamId;
+            review.WhoImRating = findDev.UserName;
+            return View(review);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MakeReview(Review review)
+        {
+            var devJustReviewed = _context.TeamOfDevs.Where(d => d.DeveloperId == review.DevloperId).SingleOrDefault();
+            var devToUpdate = _context.Developers.Where(d => d.DeveloperId == devJustReviewed.DeveloperId).SingleOrDefault();
+            devToUpdate.IsInContract = false;
+            _context.Update(devToUpdate);
+            _context.TeamOfDevs.Remove(devJustReviewed);
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Teams));
         }
     }
 }

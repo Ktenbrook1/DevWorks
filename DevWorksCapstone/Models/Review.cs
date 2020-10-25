@@ -15,13 +15,16 @@ namespace DevWorksCapstone.Models
         public int Rating { get; set; }
         public string ReviewGiven { get; set; }
 
-        [ForeignKey("Employer")]
-        public int EmployerId { get; set; }
-        public Employer Employer { get; set; }
+        //[ForeignKey("Employer")]
+        //public int EmployerId { get; set; }
+        //public Employer Employer { get; set; }
 
         [ForeignKey("Developer")]
         public int DevloperId { get; set; }
         public Developer Developer { get; set; }
 
+        [ForeignKey("Team")]
+        public int TeamId { get; set; }
+        public Team Team { get; set; }
     }
 }

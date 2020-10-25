@@ -62,10 +62,8 @@
                 @Html.DisplayFor(modelItem => item.EmployerName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ListingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ListingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ListingId">Delete</a>
-                <a asp-action="RecommendedDevelopers" asp-route-id="@item.ListingId">Recommended Developers</a>
+             
+                <a asp-action="RecommendedDevelopers" asp-route-id="@item.ListingId">Recommended Developers</a> | 
                 <a asp-action="Team" asp-route-id="@item.ListingId">Team</a>
             </td>
         </tr>

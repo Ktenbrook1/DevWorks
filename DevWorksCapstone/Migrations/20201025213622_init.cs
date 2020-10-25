@@ -358,8 +358,8 @@ namespace DevWorksCapstone.Migrations
                     WhoImRating = table.Column<string>(nullable: true),
                     Rating = table.Column<int>(nullable: false),
                     ReviewGiven = table.Column<string>(nullable: true),
-                    EmployerId = table.Column<int>(nullable: false),
-                    DevloperId = table.Column<int>(nullable: false)
+                    DevloperId = table.Column<int>(nullable: false),
+                    TeamId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -371,10 +371,10 @@ namespace DevWorksCapstone.Migrations
                         principalColumn: "DeveloperId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_Employers_EmployerId",
-                        column: x => x.EmployerId,
-                        principalTable: "Employers",
-                        principalColumn: "EmployerId",
+                        name: "FK_Reviews_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -507,9 +507,9 @@ namespace DevWorksCapstone.Migrations
                 column: "DevloperId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_EmployerId",
+                name: "IX_Reviews_TeamId",
                 table: "Reviews",
-                column: "EmployerId");
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamOfDevs_DeveloperId",

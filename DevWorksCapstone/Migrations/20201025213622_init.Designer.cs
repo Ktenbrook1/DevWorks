@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevWorksCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201025184657_init")]
+    [Migration("20201025213622_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -251,14 +251,14 @@ namespace DevWorksCapstone.Migrations
                     b.Property<int>("DevloperId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewGiven")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
 
                     b.Property<string>("WhoImRating")
                         .HasColumnType("nvarchar(max)");
@@ -267,7 +267,7 @@ namespace DevWorksCapstone.Migrations
 
                     b.HasIndex("DevloperId");
 
-                    b.HasIndex("EmployerId");
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Reviews");
                 });
@@ -602,9 +602,9 @@ namespace DevWorksCapstone.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DevWorksCapstone.Models.Employer", "Employer")
+                    b.HasOne("DevWorksCapstone.Models.Team", "Team")
                         .WithMany()
-                        .HasForeignKey("EmployerId")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
