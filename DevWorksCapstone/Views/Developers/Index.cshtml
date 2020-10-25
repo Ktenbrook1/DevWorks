@@ -22,9 +22,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.GitHubLink)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.ProfileImgURL)
-            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Bio)
             </th>
@@ -34,9 +31,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsInContract)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.IdentityUser)
-            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -50,9 +44,6 @@
                 <td>
                     <a class="anchor" href="@Html.DisplayFor(modelItem => item.GitHubLink)" target="_blank">My GitHub</a>
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.ProfileImgURL)
-                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Bio)
                 </td>
@@ -62,13 +53,11 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.IsInContract)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.IdentityUser.Id)
-                </td>*@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.DeveloperId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.DeveloperId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.DeveloperId">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.DeveloperId">Delete</a> |
+                    <a asp-action="MyReviews" asp-route-id="@item.DeveloperId">My Reviews</a>
                 </td>
             </tr>
         }
