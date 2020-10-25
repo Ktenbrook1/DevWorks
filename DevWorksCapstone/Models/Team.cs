@@ -14,12 +14,13 @@ namespace DevWorksCapstone.Models
         public string TeamName { get; set; }
         public bool TeamIsAlive { get; set; }
 
-        [ForeignKey("Developer")]
-        public int DevloperId { get; set; }
-        public Developer Developer { get; set; }
 
         [ForeignKey("Listing")]
         public int ListingId { get; set; }
         public Listing Listing { get; set; }
+
+        public ICollection<TeamOfDevs> DevelopersOnTeam { get; set; }
+
+        public ICollection<Developer> DevelopersOnTeam2 { get; set; }
     }
 }

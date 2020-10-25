@@ -84,12 +84,17 @@ namespace DevWorksCapstone.Migrations
                     b.Property<double>("RatePerHr")
                         .HasColumnType("float");
 
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DeveloperId");
 
                     b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Developers");
                 });
@@ -272,9 +277,6 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DevloperId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ListingId")
                         .HasColumnType("int");
 
@@ -286,11 +288,24 @@ namespace DevWorksCapstone.Migrations
 
                     b.HasKey("TeamId");
 
-                    b.HasIndex("DevloperId");
-
                     b.HasIndex("ListingId");
 
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("DevWorksCapstone.Models.TeamOfDevs", b =>
+                {
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeveloperId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeamId", "DeveloperId");
+
+                    b.HasIndex("DeveloperId");
+
+                    b.ToTable("TeamOfDevs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -510,6 +525,10 @@ namespace DevWorksCapstone.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("DevWorksCapstone.Models.Team", null)
+                        .WithMany("DevelopersOnTeam2")
+                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("DevWorksCapstone.Models.DeveloperAbilities", b =>
@@ -590,15 +609,24 @@ namespace DevWorksCapstone.Migrations
 
             modelBuilder.Entity("DevWorksCapstone.Models.Team", b =>
                 {
-                    b.HasOne("DevWorksCapstone.Models.Developer", "Developer")
-                        .WithMany()
-                        .HasForeignKey("DevloperId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DevWorksCapstone.Models.Listing", "Listing")
                         .WithMany()
                         .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DevWorksCapstone.Models.TeamOfDevs", b =>
+                {
+                    b.HasOne("DevWorksCapstone.Models.Developer", "Developer")
+                        .WithMany("Teams")
+                        .HasForeignKey("DeveloperId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevWorksCapstone.Models.Team", "Team")
+                        .WithMany("DevelopersOnTeam")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

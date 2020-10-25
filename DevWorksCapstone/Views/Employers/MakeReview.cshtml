@@ -1,0 +1,48 @@
+﻿@model DevWorksCapstone.Models.Review
+
+@{
+    ViewData["Title"] = "MakeReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>MakeReview</h1>
+
+<h4>Review</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="MakeReview">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="WhoImRating" class="control-label"></label>
+                <input asp-for="WhoImRating" class="form-control" />
+                <span asp-validation-for="WhoImRating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewGiven" class="control-label"></label>
+                <input asp-for="ReviewGiven" class="form-control" />
+                <span asp-validation-for="ReviewGiven" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployerId" class="control-label"></label>
+                <select asp-for="EmployerId" class ="form-control" asp-items="ViewBag.EmployerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DevloperId" class="control-label"></label>
+                <select asp-for="DevloperId" class ="form-control" asp-items="ViewBag.DevloperId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

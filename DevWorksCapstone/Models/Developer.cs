@@ -34,6 +34,7 @@ namespace DevWorksCapstone.Models
         public SelectList ListingsForEmp { get; set; }
         [NotMapped]
         public int MyLisitng { get; set; }
+        public ICollection<DeveloperAbilities> DevAbilities { get; set; }
 
         public Developer()
         {
@@ -44,7 +45,11 @@ namespace DevWorksCapstone.Models
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-        public ICollection<DeveloperAbilities> DevAbilities { get; set; }
 
+        //[ForeignKey("Team")]
+        //public int TeamId { get; set; }
+        //public Team Team { get; set; }
+
+        public ICollection<TeamOfDevs> Teams { get; set; }
     }
 }

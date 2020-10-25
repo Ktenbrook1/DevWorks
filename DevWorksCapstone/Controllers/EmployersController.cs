@@ -253,11 +253,7 @@ namespace DevWorksCapstone.Controllers
             {
                 return NotFound();
             }
-            //Get developers with the highest rating
-            //Get developers with the skills the are looking for based on their listing
-     
-            //  var findDevelopers = _context.DeveloperAbilities.Where(da => da.AbilityId == listing.EmployersWantedAbilities.)
-
+           
             var currentListing = _context.Listings.Where(l => l.ListingId == listing.ListingId).ToList();
 
             currentListing[0].SelectedAbilities = _context.EmployersWantedAbilities
@@ -367,32 +363,41 @@ namespace DevWorksCapstone.Controllers
         public async Task<IActionResult> Hire(Developer developer)
         {
             var listing = _context.Listings.Where(l => l.ListingId == developer.MyLisitng).SingleOrDefault();
-            var teamHaveListing = _context.Teams.Where(t => t.ListingId == listing.ListingId).SingleOrDefault();
-         //   var developerToContract = _context.Developers.Where(d => d.DeveloperId == developer.DeveloperId).SingleOrDefault();
+            var teamHaveListing = _context.Teams.Where(t => t.ListingId == listing.ListingId).ToList();
+            //   var developerToContract = _context.Developers.Where(d => d.DeveloperId == developer.DeveloperId).SingleOrDefault();
+            var foundDev = _context.Developers.Where(d => d.DeveloperId == developer.DeveloperId).SingleOrDefault();
+            TeamOfDevs ofDevs = new TeamOfDevs();
+         //   var findDevsOnTeam = _context.TeamOfDevs.Where(t => t.TeamId = teamHaveListing[0].ListingId);
 
-            if (teamHaveListing != null)
+            if (teamHaveListing.Count != 0)
             {
-                //add developer to existing Team
-                teamHaveListing.ListingId = listing.ListingId;
-                teamHaveListing.DevloperId = developer.DeveloperId;
-                teamHaveListing.TeamIsAlive = true;
-                developer.IsInContract = true;
-                _context.Update(developer);
-                _context.Teams.Add(teamHaveListing);
+                ofDevs.DeveloperId = foundDev.DeveloperId;
+                ofDevs.TeamId = teamHaveListing[0].TeamId;
+                _context.TeamOfDevs.Add(ofDevs);
+
+                foundDev.IsInContract = true;
+                _context.Update(foundDev);
                 await _context.SaveChangesAsync();
             }
             else
             {
                 Team team = new Team();
                 team.ListingId = listing.ListingId;
-                team.DevloperId = developer.DeveloperId;
-                teamHaveListing.TeamIsAlive = true;
-                developer.IsInContract = true;
-                _context.Update(developer);
+                team.TeamIsAlive = true;
+                team.TeamName = listing.Title;
+                foundDev.IsInContract = true;
+                _context.Update(foundDev);
                 _context.Teams.Add(team);
+
+                await _context.SaveChangesAsync();
+
+                ofDevs.DeveloperId = foundDev.DeveloperId;
+                ofDevs.TeamId = team.TeamId;
+                _context.TeamOfDevs.Add(ofDevs);
+          
                 await _context.SaveChangesAsync();
             }
-            SendEmail(developer);
+            //  SendEmail(developer);
 
             return RedirectToAction(nameof(Index));
         }
@@ -406,8 +411,8 @@ namespace DevWorksCapstone.Controllers
             var fromAddress = new MailAddress(fromEmail, loggedInEmployer.UserName);
             var toAddress = new MailAddress(toEmail, developer.UserName);
             string fromPassword = MyKeys.passcode;
-            const string subject = "Hired In Devworks";
-            string body = "Congradulations " + loggedInEmployer.UserName + " Has Hired you for contract at " + loggedInEmployer.CompanyName + "!";
+            const string subject = "Hired On DevWorks";
+            string body = "Congratulations " + loggedInEmployer.UserName + " Has Hired you for contract at " + loggedInEmployer.CompanyName + "!";
 
             SmtpClient smtp = new SmtpClient
             {
@@ -427,7 +432,7 @@ namespace DevWorksCapstone.Controllers
                 smtp.Send(message2);
             }
         }
-       
+
         public async Task<IActionResult> Team(int? id)
         {
             var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
@@ -435,11 +440,11 @@ namespace DevWorksCapstone.Controllers
             List<Developer> findDev = new List<Developer>();
             try
             {
-                var DevsOnTeam = _context.Teams.Where(t => t.TeamId == Team.TeamId).ToList();
+                var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == Team.TeamId).ToList();
 
                 foreach (var devOnTeam in DevsOnTeam)
                 {
-                    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DevloperId).SingleOrDefault();
+                    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
 
                     findDev.Add(aDev);
                 }
@@ -455,10 +460,10 @@ namespace DevWorksCapstone.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
-            var findAllTeams = _context.Teams.Where(t => t.Listing.EmployerId == loggedInEmployer.EmployerId).SingleOrDefault();
-            if(findAllTeams == null)
+            var findAllTeams = _context.Teams.Where(t => t.Listing.EmployerId == loggedInEmployer.EmployerId).ToList();
+            if (findAllTeams == null)
             {
-                List<Team> team = new List<Team>();
+                IEnumerable<Team> team = new List<Team>();
                 return View(team);
             }
             return View(findAllTeams);
@@ -478,18 +483,30 @@ namespace DevWorksCapstone.Controllers
 
             return View(team);
         }
-        [HttpPost, ActionName("EndTeamEarly")]
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EndTeamEarly(int id)
+        public async Task<IActionResult> PleaseRateDevs(int id)
         {
-            var team = await _context.Teams.FindAsync(id);
-            _context.Teams.Remove(team);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(PleaseRate));
-        }
-        public async Task<IActionResult> PleaseRate()
-        {
-            return View();
+            var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
+            var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
+            List<Developer> findDev = new List<Developer>();
+            try
+            {
+                var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == Team.TeamId).ToList();
+
+                foreach (var devOnTeam in DevsOnTeam)
+                {
+                    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
+
+                    findDev.Add(aDev);
+                }
+            }
+            catch
+            {
+
+            }
+            return View(findDev);
         }
     }
 }

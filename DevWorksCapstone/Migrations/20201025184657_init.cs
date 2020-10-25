@@ -166,32 +166,6 @@ namespace DevWorksCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Developers",
-                columns: table => new
-                {
-                    DeveloperId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(nullable: true),
-                    GitHubLink = table.Column<string>(nullable: true),
-                    ProfileImgURL = table.Column<string>(nullable: true),
-                    Bio = table.Column<string>(nullable: true),
-                    RatePerHr = table.Column<double>(nullable: false),
-                    IsInContract = table.Column<bool>(nullable: false),
-                    IdentityUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Developers", x => x.DeveloperId);
-                    table.ForeignKey(
-                        name: "FK_Developers_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Employers",
                 columns: table => new
                 {
@@ -212,30 +186,6 @@ namespace DevWorksCapstone.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DeveloperAbilities",
-                columns: table => new
-                {
-                    AbilityId = table.Column<int>(nullable: false),
-                    DeveloperId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DeveloperAbilities", x => new { x.DeveloperId, x.AbilityId });
-                    table.ForeignKey(
-                        name: "FK_DeveloperAbilities_Abilities_AbilityId",
-                        column: x => x.AbilityId,
-                        principalTable: "Abilities",
-                        principalColumn: "AbilityId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DeveloperAbilities_Developers_DeveloperId",
-                        column: x => x.DeveloperId,
-                        principalTable: "Developers",
-                        principalColumn: "DeveloperId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -263,6 +213,108 @@ namespace DevWorksCapstone.Migrations
                         column: x => x.EmployerId,
                         principalTable: "Employers",
                         principalColumn: "EmployerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployersWantedAbilities",
+                columns: table => new
+                {
+                    AbilityId = table.Column<int>(nullable: false),
+                    ListingId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployersWantedAbilities", x => new { x.ListingId, x.AbilityId });
+                    table.ForeignKey(
+                        name: "FK_EmployersWantedAbilities_Abilities_AbilityId",
+                        column: x => x.AbilityId,
+                        principalTable: "Abilities",
+                        principalColumn: "AbilityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployersWantedAbilities_Listings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "Listings",
+                        principalColumn: "ListingId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teams",
+                columns: table => new
+                {
+                    TeamId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TeamName = table.Column<string>(nullable: true),
+                    TeamIsAlive = table.Column<bool>(nullable: false),
+                    ListingId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.TeamId);
+                    table.ForeignKey(
+                        name: "FK_Teams_Listings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "Listings",
+                        principalColumn: "ListingId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Developers",
+                columns: table => new
+                {
+                    DeveloperId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true),
+                    GitHubLink = table.Column<string>(nullable: true),
+                    ProfileImgURL = table.Column<string>(nullable: true),
+                    Bio = table.Column<string>(nullable: true),
+                    RatePerHr = table.Column<double>(nullable: false),
+                    IsInContract = table.Column<bool>(nullable: false),
+                    IdentityUserId = table.Column<string>(nullable: true),
+                    TeamId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Developers", x => x.DeveloperId);
+                    table.ForeignKey(
+                        name: "FK_Developers_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Developers_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeveloperAbilities",
+                columns: table => new
+                {
+                    AbilityId = table.Column<int>(nullable: false),
+                    DeveloperId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeveloperAbilities", x => new { x.DeveloperId, x.AbilityId });
+                    table.ForeignKey(
+                        name: "FK_DeveloperAbilities_Abilities_AbilityId",
+                        column: x => x.AbilityId,
+                        principalTable: "Abilities",
+                        principalColumn: "AbilityId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeveloperAbilities_Developers_DeveloperId",
+                        column: x => x.DeveloperId,
+                        principalTable: "Developers",
+                        principalColumn: "DeveloperId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -327,53 +379,26 @@ namespace DevWorksCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployersWantedAbilities",
+                name: "TeamOfDevs",
                 columns: table => new
                 {
-                    AbilityId = table.Column<int>(nullable: false),
-                    ListingId = table.Column<int>(nullable: false)
+                    TeamId = table.Column<int>(nullable: false),
+                    DeveloperId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployersWantedAbilities", x => new { x.ListingId, x.AbilityId });
+                    table.PrimaryKey("PK_TeamOfDevs", x => new { x.TeamId, x.DeveloperId });
                     table.ForeignKey(
-                        name: "FK_EmployersWantedAbilities_Abilities_AbilityId",
-                        column: x => x.AbilityId,
-                        principalTable: "Abilities",
-                        principalColumn: "AbilityId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployersWantedAbilities_Listings_ListingId",
-                        column: x => x.ListingId,
-                        principalTable: "Listings",
-                        principalColumn: "ListingId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teams",
-                columns: table => new
-                {
-                    TeamId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TeamName = table.Column<string>(nullable: true),
-                    DevloperId = table.Column<int>(nullable: false),
-                    ListingId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teams", x => x.TeamId);
-                    table.ForeignKey(
-                        name: "FK_Teams_Developers_DevloperId",
-                        column: x => x.DevloperId,
+                        name: "FK_TeamOfDevs_Developers_DeveloperId",
+                        column: x => x.DeveloperId,
                         principalTable: "Developers",
                         principalColumn: "DeveloperId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Teams_Listings_ListingId",
-                        column: x => x.ListingId,
-                        principalTable: "Listings",
-                        principalColumn: "ListingId",
+                        name: "FK_TeamOfDevs_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -447,6 +472,11 @@ namespace DevWorksCapstone.Migrations
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Developers_TeamId",
+                table: "Developers",
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employers_IdentityUserId",
                 table: "Employers",
                 column: "IdentityUserId");
@@ -482,9 +512,9 @@ namespace DevWorksCapstone.Migrations
                 column: "EmployerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Teams_DevloperId",
-                table: "Teams",
-                column: "DevloperId");
+                name: "IX_TeamOfDevs_DeveloperId",
+                table: "TeamOfDevs",
+                column: "DeveloperId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_ListingId",
@@ -522,7 +552,7 @@ namespace DevWorksCapstone.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Teams");
+                name: "TeamOfDevs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -532,6 +562,9 @@ namespace DevWorksCapstone.Migrations
 
             migrationBuilder.DropTable(
                 name: "Developers");
+
+            migrationBuilder.DropTable(
+                name: "Teams");
 
             migrationBuilder.DropTable(
                 name: "Listings");

@@ -1,15 +1,12 @@
 ﻿@model IEnumerable<DevWorksCapstone.Models.Developer>
 
 @{
-    ViewData["Title"] = "PleaseateDevs";
+    ViewData["Title"] = "PleaseRateDevs";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>PleaseateDevs</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Please Rate Your Developers</h1>
+<p>Please take a moment to rate your developers as it helps the developers, other employers and us here at DevWorks to give the best service to our customers.</p>
 <table class="table">
     <thead>
         <tr>
@@ -68,9 +65,7 @@
                 @Html.DisplayFor(modelItem => item.IdentityUser.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DeveloperId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DeveloperId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DeveloperId">Delete</a>
+                <a asp-action="Rate" asp-route-id="@item.DeveloperId">Rate</a> 
             </td>
         </tr>
 }
