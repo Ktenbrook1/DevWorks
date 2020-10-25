@@ -468,7 +468,7 @@ namespace DevWorksCapstone.Controllers
             }
             return View(findAllTeams);
         }
-        public async Task<IActionResult> EndTeamEarly(int? id)
+        public async Task<IActionResult> PleaseRateDevs(int? id)
         {
             if (id == null)
             {
@@ -481,13 +481,6 @@ namespace DevWorksCapstone.Controllers
                 return NotFound();
             }
 
-            return View(team);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PleaseRateDevs(int id)
-        {
             var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
             var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
             List<Developer> findDev = new List<Developer>();
@@ -506,6 +499,21 @@ namespace DevWorksCapstone.Controllers
             {
 
             }
+            return View(findDev);
+        }
+
+        [HttpPost, ActionName("EndTeamEarly")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EndTeamEarly(int id)
+        {
+            //var team = await _context.Teams.FindAsync(id);
+            //_context.Teams.Remove(team);
+            //await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(PleaseRateDevs));
+        }
+        public async Task<IActionResult> MakeReview(int? id)
+        {
+            var findDev = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
             return View(findDev);
         }
     }
