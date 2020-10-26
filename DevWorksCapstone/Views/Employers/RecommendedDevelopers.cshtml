@@ -16,11 +16,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.GitHubLink)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.ProfileImgURL)
-            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Bio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvgRating)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RatePerHr)
@@ -41,11 +41,11 @@
             <td>
                 <a class="anchor" href="@Html.DisplayFor(modelItem => item.GitHubLink)" target="_blank">GitHub</a>
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.ProfileImgURL)
-            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Bio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvgRating)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RatePerHr)
@@ -53,7 +53,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IsInContract)
             </td>
-          
+
             <td>
                 <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a> |
                 <a asp-action="Reviews" asp-route-id="@item.DeveloperId">Reviews</a>

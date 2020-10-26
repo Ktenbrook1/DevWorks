@@ -19,12 +19,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.DeveloperName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Employer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Developer)
-            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -40,14 +34,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DeveloperName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Employer.EmployerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Developer.DeveloperId)
-            </td>*@
         <td>
-            <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>|
+            <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a> |
             <a asp-action="Hire" asp-route-id="@item.DeveloperId">Hire</a>
         </td>
         </tr>

@@ -29,9 +29,6 @@
                 @Html.DisplayNameFor(model => model.PositionsOpen)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employer)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.EmployerName)
             </th>
             <th></th>
@@ -56,14 +53,10 @@
                 @Html.DisplayFor(modelItem => item.PositionsOpen)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Employer.EmployerId)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.EmployerName)
             </td>
-            <td>
-             
-                <a asp-action="RecommendedDevelopers" asp-route-id="@item.ListingId">Recommended Developers</a> | 
+            <td>           
+                <a asp-action="RecommendedDevelopers" asp-route-id="@item.ListingId">Recommended Devs</a> | 
                 <a asp-action="Team" asp-route-id="@item.ListingId">Team</a>
             </td>
         </tr>

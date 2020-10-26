@@ -22,13 +22,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.GitHubLink)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfileImgURL)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProfileImgURL)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Bio)
         </dt>
@@ -66,14 +60,14 @@
                 <span asp-validation-for="ListingsForEmp" class="text-danger"></span>
             </div>
             <div class="container my-3">
-                Their Abilities:
+                <h5>Their Abilities:</h5> 
                 @using (Html.BeginForm("Index", "Home"))
                 {
                     
                         <div>
                             <label>
                                 <dt class="col-sm-8">
-                                    @Html.DisplayFor(model => model.SelectedAbilities)
+                                    @Html.DisplayFor(model => model.SelectedAbilities + "  ")
                                 </dt>
                             </label>
                         </div>
