@@ -14,9 +14,13 @@ namespace DevWorksCapstone.Models
         public int ListingId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        [Display(Name = "Start Date")]
         public DateTime? StartDate { get; set; }
+        [Display(Name = "End Date")]
         public DateTime? EndDate { get; set; }
+        [Display(Name = "Rate Wanted")]
         public double RateLookingFor { get; set; }
+        [Display(Name = "Openings")]
         public int PositionsOpen { get; set; }
 
         [NotMapped]

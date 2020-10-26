@@ -11,8 +11,10 @@ namespace DevWorksCapstone.Models
     {
         [Key]
         public int ReviewID { get; set; }
+        [Display(Name = "Who I'm Rating")]
         public string WhoImRating { get; set; }
         public int Rating { get; set; }
+        [Display(Name = "Review")]
         public string ReviewGiven { get; set; }
 
         //[ForeignKey("Employer")]

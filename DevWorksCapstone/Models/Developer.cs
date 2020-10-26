@@ -15,11 +15,14 @@ namespace DevWorksCapstone.Models
         public int DeveloperId { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        [Display(Name = "Github")]
         public string GitHubLink { get; set; }
+        [Display(Name = "Profile Picture")]
         public string ProfileImgURL { get; set; }
         public string Bio { get; set; }
         [Display(Name = "Rate I charge per hr")]
         public double RatePerHr { get; set; }
+        [Display(Name = "Currently Under Contract")]
         public bool IsInContract { get; set; }
 
         [NotMapped]

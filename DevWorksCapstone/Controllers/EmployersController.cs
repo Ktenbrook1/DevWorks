@@ -528,5 +528,25 @@ namespace DevWorksCapstone.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Teams));
         }
+        public async Task<IActionResult> MyReviews()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            var findReviews = _context.Reviews.Where(r => r.WhoImRating == loggedInEmployer.UserName).ToList();
+            return View(findReviews);
+        }
+
+        public async Task<IActionResult> Reviews(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var developerObj = _context.Developers.Where(e => e.DeveloperId == id).SingleOrDefault();
+            var findReviews = _context.Reviews.Where(r => r.WhoImRating == developerObj.UserName).ToList();
+
+            return View(findReviews);
+        }
     }
 }

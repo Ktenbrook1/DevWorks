@@ -14,7 +14,9 @@ namespace DevWorksCapstone.Models
         public int EmployerId { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
+        [Display(Name = "Profile Image")]
         public string ProfileImgURL { get; set; }
 
         [ForeignKey("IdentityUser")]
