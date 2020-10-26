@@ -36,7 +36,7 @@ namespace DevWorksCapstone.Models
         [ForeignKey("Employer")]
         public int EmployerId { get; set; }
         public Employer Employer { get; set; }
-
+        [Display(Name = "Employer Name")]
         public string EmployerName { get; set; }
 
         public DateTime DateStarting

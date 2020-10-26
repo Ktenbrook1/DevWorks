@@ -274,6 +274,7 @@ namespace DevWorksCapstone.Migrations
                     Bio = table.Column<string>(nullable: true),
                     RatePerHr = table.Column<double>(nullable: false),
                     IsInContract = table.Column<bool>(nullable: false),
+                    AvgRating = table.Column<int>(nullable: false),
                     IdentityUserId = table.Column<string>(nullable: true),
                     TeamId = table.Column<int>(nullable: true)
                 },

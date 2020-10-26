@@ -190,6 +190,7 @@ namespace DevWorksCapstone.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 developer.IdentityUserId = userId;
+                developer.AvgRating = 0;
                 
                 _context.Developers.Add(developer);
                 await _context.SaveChangesAsync();

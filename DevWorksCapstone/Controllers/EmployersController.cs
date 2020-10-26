@@ -284,9 +284,10 @@ namespace DevWorksCapstone.Controllers
                     }
                 }
             }
-           //WILL NEED TO INCORPORATE RATINGS SOON
+            //WILL NEED TO INCORPORATE RATINGS SOON
+            var query = developers.OrderByDescending(developers => developers.AvgRating);
             
-            return View(developers);
+            return View(query);
         }
 
         public async Task<IActionResult> Contact(int? id)
@@ -397,7 +398,7 @@ namespace DevWorksCapstone.Controllers
           
                 await _context.SaveChangesAsync();
             }
-            //  SendEmail(developer);
+             SendEmail(developer);
 
             return RedirectToAction(nameof(Index));
         }
@@ -522,6 +523,17 @@ namespace DevWorksCapstone.Controllers
             var devJustReviewed = _context.TeamOfDevs.Where(d => d.DeveloperId == review.DevloperId).SingleOrDefault();
             var devToUpdate = _context.Developers.Where(d => d.DeveloperId == devJustReviewed.DeveloperId).SingleOrDefault();
             devToUpdate.IsInContract = false;
+
+            var allReviewsForDev = _context.Reviews.Where(r => r.DevloperId == devToUpdate.DeveloperId).ToList();
+            int totalRating = 0;
+            int count = 0;
+            foreach( Review review1 in allReviewsForDev)
+            {
+                totalRating += review1.Rating;
+                count++;
+            }
+            devToUpdate.AvgRating = totalRating / count;
+
             _context.Update(devToUpdate);
             _context.TeamOfDevs.Remove(devJustReviewed);
             _context.Reviews.Add(review);
@@ -531,7 +543,7 @@ namespace DevWorksCapstone.Controllers
         public async Task<IActionResult> MyReviews()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var loggedInEmployer = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
             var findReviews = _context.Reviews.Where(r => r.WhoImRating == loggedInEmployer.UserName).ToList();
             return View(findReviews);

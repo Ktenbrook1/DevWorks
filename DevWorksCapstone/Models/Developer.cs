@@ -24,6 +24,7 @@ namespace DevWorksCapstone.Models
         public double RatePerHr { get; set; }
         [Display(Name = "Currently Under Contract")]
         public bool IsInContract { get; set; }
+        public int AvgRating { get; set; }
 
         [NotMapped]
         public IList<string>? SelectedAbilities { get; set; }

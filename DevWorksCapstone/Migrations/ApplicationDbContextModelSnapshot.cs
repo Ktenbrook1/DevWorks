@@ -63,6 +63,9 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AvgRating")
+                        .HasColumnType("int");
+
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
