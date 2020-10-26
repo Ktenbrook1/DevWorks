@@ -1,15 +1,16 @@
 ﻿@model IEnumerable<DevWorksCapstone.Models.Review>
 
 @{
-    ViewData["Title"] = "MyReviews";
+    ViewData["Title"] = "Reviews";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>MyReviews</h1>
+<h1>Reviews</h1>
 
 <table class="table">
     <thead>
         <tr>
+          \
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
             </th>
@@ -29,6 +30,7 @@
                 @Html.DisplayFor(modelItem => item.ReviewGiven)
             </td>
             <td>
+            
             </td>
         </tr>
 }

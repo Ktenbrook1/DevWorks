@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>HomePage</h1>
+<h1>Jobs That Fit You!</h1>
 
 
 <table class="table">
@@ -61,8 +61,9 @@
                     @Html.DisplayFor(modelItem => item.EmployerName)
                 </td>
                 <td>
-                    <a asp-action="Contact" asp-route-id="@item.EmployerId">Contact</a>|
-                    <a asp-action="Details" asp-route-id="@item.ListingId">Details</a>
+                    <a asp-action="Contact" asp-route-id="@item.EmployerId">Contact</a> |
+                    <a asp-action="Details" asp-route-id="@item.ListingId">Details</a> |
+                    <a asp-action="Reviews" asp-route-id="@item.EmployerId">Reviews</a>
                 </td>
             </tr>
         }
