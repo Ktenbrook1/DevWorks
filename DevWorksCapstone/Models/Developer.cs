@@ -50,10 +50,10 @@ namespace DevWorksCapstone.Models
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
 
-        //[ForeignKey("Team")]
-        //public int TeamId { get; set; }
-        //public Team Team { get; set; }
+        [ForeignKey("Team")]
+        public int? TeamId { get; set; }
+        public Team Team { get; set; }
 
-        public ICollection<TeamOfDevs> Teams { get; set; }
+        //  public ICollection<TeamOfDevs> Teams { get; set; }
     }
 }

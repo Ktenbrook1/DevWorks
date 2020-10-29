@@ -306,7 +306,7 @@ namespace DevWorksCapstone.Controllers
             message.EmployerEmail = loggedInEmployer.Email;
 
             var DeveloperToContact = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
-            message.DeveloperId = DeveloperToContact.DeveloperId;
+          //  message.DeveloperId = DeveloperToContact.DeveloperId;
             message.DeveloperName = DeveloperToContact.UserName;
             message.DeveloperEmail = DeveloperToContact.Email;
 
@@ -367,14 +367,14 @@ namespace DevWorksCapstone.Controllers
             var teamHaveListing = _context.Teams.Where(t => t.ListingId == listing.ListingId).ToList();
             //   var developerToContract = _context.Developers.Where(d => d.DeveloperId == developer.DeveloperId).SingleOrDefault();
             var foundDev = _context.Developers.Where(d => d.DeveloperId == developer.DeveloperId).SingleOrDefault();
-            TeamOfDevs ofDevs = new TeamOfDevs();
+        //    TeamOfDevs ofDevs = new TeamOfDevs();
          //   var findDevsOnTeam = _context.TeamOfDevs.Where(t => t.TeamId = teamHaveListing[0].ListingId);
 
             if (teamHaveListing.Count != 0)
             {
-                ofDevs.DeveloperId = foundDev.DeveloperId;
-                ofDevs.TeamId = teamHaveListing[0].TeamId;
-                _context.TeamOfDevs.Add(ofDevs);
+                //ofDevs.DeveloperId = foundDev.DeveloperId;
+                //ofDevs.TeamId = teamHaveListing[0].TeamId;
+                //_context.TeamOfDevs.Add(ofDevs);
 
                 foundDev.IsInContract = true;
                 _context.Update(foundDev);
@@ -392,13 +392,20 @@ namespace DevWorksCapstone.Controllers
 
                 await _context.SaveChangesAsync();
 
-                ofDevs.DeveloperId = foundDev.DeveloperId;
-                ofDevs.TeamId = team.TeamId;
-                _context.TeamOfDevs.Add(ofDevs);
+                //ofDevs.DeveloperId = foundDev.DeveloperId;
+                //ofDevs.TeamId = team.TeamId;
+                //_context.TeamOfDevs.Add(ofDevs);
           
                 await _context.SaveChangesAsync();
             }
-             SendEmail(developer);
+            try
+            {
+                SendEmail(developer);
+            }
+            catch
+            {
+                
+            }          
 
             return RedirectToAction(nameof(Index));
         }
@@ -441,14 +448,14 @@ namespace DevWorksCapstone.Controllers
             List<Developer> findDev = new List<Developer>();
             try
             {
-                var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == Team.TeamId).ToList();
+                //var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == Team.TeamId).ToList();
 
-                foreach (var devOnTeam in DevsOnTeam)
-                {
-                    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
+                //foreach (var devOnTeam in DevsOnTeam)
+                //{
+                //    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
 
-                    findDev.Add(aDev);
-                }
+                //    findDev.Add(aDev);
+                //}
             }
             catch
             {
@@ -487,14 +494,14 @@ namespace DevWorksCapstone.Controllers
             List<Developer> findDev = new List<Developer>();
             try
             {
-                var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == team.TeamId).ToList();
+            //    var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == team.TeamId).ToList();
 
-                foreach (var devOnTeam in DevsOnTeam)
-                {
-                    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
+            //    foreach (var devOnTeam in DevsOnTeam)
+            //    {
+            //        var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
                     
-                    findDev.Add(aDev);
-                }
+            //        findDev.Add(aDev);
+            //    }
             }
             catch
             {
@@ -508,36 +515,38 @@ namespace DevWorksCapstone.Controllers
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            var teamOfCurrentDev = _context.TeamOfDevs.Where(tod => tod.DeveloperId == findDev.DeveloperId).SingleOrDefault();
+          //  var teamOfCurrentDev = _context.TeamOfDevs.Where(tod => tod.DeveloperId == findDev.DeveloperId).SingleOrDefault();
            
             Review review = new Review();
-            review.DevloperId = findDev.DeveloperId;
-            review.TeamId = teamOfCurrentDev.TeamId;
             review.WhoImRating = findDev.UserName;
+            review.DevloperId = findDev.DeveloperId;
+            review.EmployerId = loggedInEmployer.EmployerId;
             return View(review);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MakeReview(Review review)
         {
-            var devJustReviewed = _context.TeamOfDevs.Where(d => d.DeveloperId == review.DevloperId).SingleOrDefault();
-            var devToUpdate = _context.Developers.Where(d => d.DeveloperId == devJustReviewed.DeveloperId).SingleOrDefault();
-            devToUpdate.IsInContract = false;
+          //  var devJustReviewed = _context.TeamOfDevs.Where(d => d.DeveloperId == review.DevloperId).SingleOrDefault();
+          //  var devToUpdate = _context.Developers.Where(d => d.DeveloperId == devJustReviewed.DeveloperId).SingleOrDefault();
+          //  devToUpdate.IsInContract = false;
 
-            var allReviewsForDev = _context.Reviews.Where(r => r.DevloperId == devToUpdate.DeveloperId).ToList();
-            int totalRating = 0;
-            int count = 0;
-            foreach( Review review1 in allReviewsForDev)
-            {
-                totalRating += review1.Rating;
-                count++;
-            }
-            devToUpdate.AvgRating = totalRating / count;
+          //  _context.Reviews.Add(review);
+          //  await _context.SaveChangesAsync();
 
-            _context.Update(devToUpdate);
-            _context.TeamOfDevs.Remove(devJustReviewed);
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+          //  var allReviewsForDev = _context.Reviews.Where(r => r.WhoImRating == devToUpdate.UserName).ToList();
+          //  int totalRating = 0;
+          //  int count = 0;
+          //  foreach( Review review1 in allReviewsForDev)
+          //  {
+          //      totalRating += review1.Rating;
+          //      count++;
+          //  }
+          //  devToUpdate.AvgRating = totalRating / count;
+
+          //  _context.Update(devToUpdate);
+          ////  _context.TeamOfDevs.Remove(devJustReviewed);
+          //  await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Teams));
         }
         public async Task<IActionResult> MyReviews()

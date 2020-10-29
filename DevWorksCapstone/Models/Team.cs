@@ -19,7 +19,7 @@ namespace DevWorksCapstone.Models
         public int ListingId { get; set; }
         public Listing Listing { get; set; }
 
-        public ICollection<TeamOfDevs> DevelopersOnTeam { get; set; }
+     //   public ICollection<TeamOfDevs> DevelopersOnTeam { get; set; }
 
         public ICollection<Developer> DevelopersOnTeam2 { get; set; }
     }

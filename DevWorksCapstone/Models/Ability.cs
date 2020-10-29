@@ -11,7 +11,6 @@ namespace DevWorksCapstone.Models
         [Key]
         public int AbilityId { get; set; }
         public string AbilityName { get; set; }
-        //public bool HasIt { get; set; }
 
         public ICollection<DeveloperAbilities> DeveloperAbilities { get; set; }
         public ICollection<EmployersWantedAbilities> EmployersWantedAbilities { get; set; }

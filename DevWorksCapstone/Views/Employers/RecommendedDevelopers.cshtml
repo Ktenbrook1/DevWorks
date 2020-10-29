@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>RecommendedDevelopers</h1>
+<h2>Recommended Developers</h2>
 
 <table class="table">
     <thead>
@@ -56,7 +56,8 @@
 
             <td>
                 <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a> |
-                <a asp-action="Reviews" asp-route-id="@item.DeveloperId">Reviews</a>
+                <a asp-action="Reviews" asp-route-id="@item.DeveloperId">Reviews</a> |
+                <a asp-action="Hire" asp-route-id="@item.DeveloperId">Details</a> 
             </td>
         </tr>
 }
