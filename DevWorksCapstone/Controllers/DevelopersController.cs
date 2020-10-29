@@ -330,7 +330,7 @@ namespace DevWorksCapstone.Controllers
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
-          //  message.DeveloperId = loggedInDeveloper.DeveloperId;
+            message.DeveloperId = loggedInDeveloper.DeveloperId;
             message.DeveloperName = loggedInDeveloper.UserName;
 
 
@@ -351,87 +351,76 @@ namespace DevWorksCapstone.Controllers
         }
         public async Task<IActionResult> Messages()
         {
-            
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
-           // var myMessage = _context.Message.Where(m => m.DeveloperId == loggedInDeveloper.DeveloperId).ToList();
+            var myMessage = _context.Message.Where(m => m.DeveloperId == loggedInDeveloper.DeveloperId).ToList();
 
-            //var listing = _context.Listings.Where(l => l.ListingId == message.ListingId).ToList();
-
-            return View();
+            return View(myMessage);
         }
-        //Takes in a listing Id so I will have to revise this
+
         public async Task<IActionResult> Team()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-
-            List<Developer> findDev = new List<Developer>();
+            var team = _context.Teams.Where(t => t.TeamId == loggedInDeveloper.TeamId).SingleOrDefault();
+            List<Developer> findDevs = new List<Developer>();
             try
             {
-                //var findTeam = _context.TeamOfDevs.Where(tod => tod.DeveloperId == loggedInDeveloper.DeveloperId).SingleOrDefault();
-                //var team = _context.Teams.Where(t => t.TeamId == findTeam.TeamId).SingleOrDefault();
-                //var DevsOnTeam = _context.TeamOfDevs.Where(tod => tod.TeamId == team.TeamId).ToList();
-
-                //foreach (var devOnTeam in DevsOnTeam)
-                //{
-                //    var aDev = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId).SingleOrDefault();
-
-                //    findDev.Add(aDev);
-                //}
+                foreach (Developer devOnTeam in team.DevelopersOnTeam)
+                {
+                    var developerOnTeam = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId);
+                    findDevs.Add(devOnTeam);
+                }
             }
-            catch {
-            
-            }
+            catch { }
 
-            return View(findDev);
+            return View(findDevs);
         }
         public async Task<IActionResult> MakeReview()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-          //  var findTeam = _context.TeamOfDevs.Where(tod => tod.DeveloperId == loggedInDeveloper.DeveloperId).SingleOrDefault();
-            //var team = _context.Teams.Where(t => t.TeamId == findTeam.TeamId).SingleOrDefault();
-            //var listing = _context.Listings.Where(l => l.ListingId == team.ListingId).SingleOrDefault();
-            //var employer = _context.Employers.Where(e => e.EmployerId == listing.EmployerId).SingleOrDefault();
+            var team = _context.Teams.Where(t => t.TeamId == loggedInDeveloper.TeamId).SingleOrDefault();
+
+            var listing = _context.Listings.Where(l => l.ListingId == team.ListingId).SingleOrDefault();
+            var employer = _context.Employers.Where(e => e.EmployerId == listing.EmployerId).SingleOrDefault();
 
             Review review = new Review();
-            review.DevloperId = loggedInDeveloper.DeveloperId;
-         //   review.TeamId = team.TeamId;
-         //   review.WhoImRating = employer.UserName;
+            review.DeveloperId = loggedInDeveloper.DeveloperId;
+            review.EmployerId = employer.EmployerId;
+            review.WhoImRating = employer.UserName;
             return View(review);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MakeReview(Review review)
         {
-            //var devJustReviewed = _context.TeamOfDevs.Where(d => d.DeveloperId == review.DevloperId).SingleOrDefault();
-            //var devToUpdate = _context.Developers.Where(d => d.DeveloperId == devJustReviewed.DeveloperId).SingleOrDefault();
-            //devToUpdate.IsInContract = false;
-            //_context.Update(devToUpdate);
-            //_context.TeamOfDevs.Remove(devJustReviewed);
-            //_context.Reviews.Add(review);
-            //await _context.SaveChangesAsync();
+            var devJustReviewed = _context.Developers.Where(d => d.DeveloperId == review.DeveloperId).SingleOrDefault();
+            var teamOfDev = _context.Teams.Where(t => t.TeamId == devJustReviewed.TeamId).SingleOrDefault();
+            devJustReviewed.IsInContract = false;
+            devJustReviewed.TeamId = null;
+            _context.Update(devJustReviewed);
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
 
-            //try
-            //{
-            //    var findTeamOfDevs = _context.TeamOfDevs.Where(t => t.TeamId == devJustReviewed.TeamId).ToList();
-            //    if (findTeamOfDevs.Count == 0)
-            //    {
-            //        var findTeam = _context.Teams.Where(t => t.TeamId == devJustReviewed.TeamId).SingleOrDefault();
-            //        var findListing = _context.Listings.Where(l => l.ListingId == findTeam.ListingId).SingleOrDefault();
-            //        _context.Teams.Remove(findTeam);
-            //        _context.Listings.Remove(findListing);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //}
-            //catch
-            //{
+            try
+            {
+                if (teamOfDev.DevelopersOnTeam.Count == 0)
+                {
+                    var findTeam = _context.Teams.Where(t => t.TeamId == devJustReviewed.TeamId).SingleOrDefault();
+                    var findListing = _context.Listings.Where(l => l.ListingId == findTeam.ListingId).SingleOrDefault();
+                    _context.Teams.Remove(findTeam);
+                    _context.Listings.Remove(findListing);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch
+            {
 
-            //}
-           
-      
+            }
+
+
             return RedirectToAction(nameof(HomePage));
         }
          

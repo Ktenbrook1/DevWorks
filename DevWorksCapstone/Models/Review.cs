@@ -18,7 +18,7 @@ namespace DevWorksCapstone.Models
         public string ReviewGiven { get; set; }
 
         [ForeignKey("Developer")]
-        public int DevloperId { get; set; }
+        public int DeveloperId { get; set; }
         public Developer Developer { get; set; }
 
         [ForeignKey("Employer")]

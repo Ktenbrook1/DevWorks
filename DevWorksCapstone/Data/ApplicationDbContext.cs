@@ -22,7 +22,7 @@ namespace DevWorksCapstone.Data
         public DbSet<Listing> Listings { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Team> Teams { get; set; }
-       // public DbSet<TeamOfDevs> TeamOfDevs { get; set; }
+        public DbSet<DevWorksCapstone.Models.Message> Message { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -48,18 +48,6 @@ namespace DevWorksCapstone.Data
                 ConcurrencyStamp = "f94ac645-3fc0-4397-8062-b423c379fb35"
             }
             );
-
-            //builder.Entity<Developer>().HasData(
-            //    new Models.Developer
-            //    {
-            //        DeveloperId = 1,
-            //        UserName = "Tommy",
-            //        GitHubLink = "https://github.com/tommy351",
-            //        ProfileImgURL = "https://upload.wikimedia.org/wikipedia/commons/d/db/Simon_Pryce_2014.jpg",
-            //        Bio = "I'm the man for the job!",
-            //        RatePerHr = 78.50,
-            //        IsInContract = false
-            //    });
 
             builder.Entity<Ability>().HasData(
                new Models.Ability
@@ -105,18 +93,7 @@ namespace DevWorksCapstone.Data
                 .WithMany(c => c.EmployersWantedAbilities)
                 .HasForeignKey(bc => bc.AbilityId);
 
-       //     builder.Entity<TeamOfDevs>()
-       //.HasKey(bc => new { bc.TeamId, bc.DeveloperId });
-       //     builder.Entity<TeamOfDevs>()
-       //         .HasOne(bc => bc.Team)
-       //         .WithMany(b => b.DevelopersOnTeam)
-       //         .HasForeignKey(bc => bc.TeamId);
-       //     builder.Entity<TeamOfDevs>()
-       //         .HasOne(bc => bc.Developer)
-       //         .WithMany(c => c.Teams)
-       //         .HasForeignKey(bc => bc.DeveloperId);
-
         }
-        public DbSet<DevWorksCapstone.Models.Message> Message { get; set; }
+       
     }
 }
