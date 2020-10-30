@@ -6,7 +6,10 @@
 }
 
 <h1>Team</h1>
-<a asp-action="MakeReview" asp-route-id="">Finished </a>
+@if ((int)ViewData["TeamExist"] > 0)
+{
+    <a asp-action="MakeReview" asp-route-id="">Finished </a>
+}
 
 <table class="table">
     <thead>

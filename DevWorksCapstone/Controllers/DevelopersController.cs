@@ -363,17 +363,23 @@ namespace DevWorksCapstone.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            var team = _context.Teams.Where(t => t.TeamId == loggedInDeveloper.TeamId).SingleOrDefault();
             List<Developer> findDevs = new List<Developer>();
+           
             try
             {
+                var team = _context.Teams.Where(t => t.TeamId == loggedInDeveloper.TeamId).SingleOrDefault();
+                var devs = Developers(team);
                 foreach (Developer devOnTeam in team.DevelopersOnTeam)
                 {
                     var developerOnTeam = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId);
                     findDevs.Add(devOnTeam);
                 }
             }
-            catch { }
+            catch
+            {
+
+            }
+            ViewData["TeamExist"] = findDevs.Count();
 
             return View(findDevs);
         }
@@ -420,7 +426,6 @@ namespace DevWorksCapstone.Controllers
 
             }
 
-
             return RedirectToAction(nameof(HomePage));
         }
          
@@ -429,7 +434,7 @@ namespace DevWorksCapstone.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
-            var findReviews = _context.Reviews.Where(r => r.WhoImRating == loggedInDeveloper.UserName).ToList();
+            var findReviews = _context.Reviews.Where(r => r.DeveloperId == loggedInDeveloper.DeveloperId).ToList();
             return View(findReviews);
         }
 
@@ -443,6 +448,12 @@ namespace DevWorksCapstone.Controllers
             var findReviews = _context.Reviews.Where(r => r.WhoImRating == employerObj.UserName).ToList();
 
             return View(findReviews);
+        }
+        public List<Developer> Developers(Team team)
+        {
+            var findDevsOnTeam = _context.Developers.Where(d => d.TeamId == team.TeamId).ToList();
+            team.DevelopersOnTeam = findDevsOnTeam;
+            return findDevsOnTeam;
         }
     }
 }
