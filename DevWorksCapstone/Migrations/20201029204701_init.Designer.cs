@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevWorksCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201029164704_init")]
+    [Migration("20201029204701_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -251,7 +251,7 @@ namespace DevWorksCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DevloperId")
+                    b.Property<int>("DeveloperId")
                         .HasColumnType("int");
 
                     b.Property<int>("EmployerId")
@@ -268,7 +268,7 @@ namespace DevWorksCapstone.Migrations
 
                     b.HasKey("ReviewID");
 
-                    b.HasIndex("DevloperId");
+                    b.HasIndex("DeveloperId");
 
                     b.HasIndex("EmployerId");
 
@@ -517,7 +517,7 @@ namespace DevWorksCapstone.Migrations
                         .HasForeignKey("IdentityUserId");
 
                     b.HasOne("DevWorksCapstone.Models.Team", "Team")
-                        .WithMany("DevelopersOnTeam2")
+                        .WithMany("DevelopersOnTeam")
                         .HasForeignKey("TeamId");
                 });
 
@@ -586,7 +586,7 @@ namespace DevWorksCapstone.Migrations
                 {
                     b.HasOne("DevWorksCapstone.Models.Developer", "Developer")
                         .WithMany()
-                        .HasForeignKey("DevloperId")
+                        .HasForeignKey("DeveloperId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

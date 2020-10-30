@@ -370,6 +370,7 @@ namespace DevWorksCapstone.Controllers
 
             if (teamHaveListing.Count != 0)
             {
+                var devs = Developers(teamHaveListing[0]);
                 teamHaveListing[0].DevelopersOnTeam.Add(developerToContract);
                 foundDev.TeamId = teamHaveListing[0].TeamId;
                 foundDev.IsInContract = true;
@@ -378,13 +379,17 @@ namespace DevWorksCapstone.Controllers
             }
             else
             {
-                Team team = new Team();
+                Team team = new Team()
+                {
+                    DevelopersOnTeam = new List<Developer>()
+                };
                 team.ListingId = listing.ListingId;
                 team.TeamIsAlive = true;
                 team.TeamName = listing.Title;
+                
 
-                teamHaveListing[0].DevelopersOnTeam.Add(developerToContract);
-                foundDev.TeamId = teamHaveListing[0].TeamId;
+                team.DevelopersOnTeam.Add(developerToContract);
+                //foundDev.TeamId = team.TeamId;
                 foundDev.IsInContract = true;
                 _context.Update(foundDev);
                 _context.Teams.Add(team);
@@ -439,6 +444,8 @@ namespace DevWorksCapstone.Controllers
             var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
             var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
             List<Developer> findDev = new List<Developer>();
+
+            var devs = Developers(Team);
             try
             {
                 foreach (Developer devOnTeam in Team.DevelopersOnTeam)
@@ -482,6 +489,8 @@ namespace DevWorksCapstone.Controllers
             var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
             var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
             List<Developer> findDev = new List<Developer>();
+
+            var devs = Developers(Team);
             try
             {
                 foreach (Developer devOnTeam in Team.DevelopersOnTeam)
@@ -507,6 +516,7 @@ namespace DevWorksCapstone.Controllers
             review.WhoImRating = findDev.UserName;
             review.DeveloperId = findDev.DeveloperId;
             review.EmployerId = loggedInEmployer.EmployerId;
+            review.TeamCurrentlyOn = findDev.TeamId;
             return View(review);
         }
         [HttpPost]
@@ -515,9 +525,6 @@ namespace DevWorksCapstone.Controllers
         {
             var devToUpdate = _context.Developers.Where(d => d.DeveloperId == review.DeveloperId).SingleOrDefault();
             devToUpdate.IsInContract = false;
-           // devToUpdate.TeamId = null;
-            //teamHaveListing[0].DevelopersOnTeam.Add(developerToContract);
-            //foundDev.TeamId = teamHaveListing[0].TeamId;
 
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
@@ -531,10 +538,32 @@ namespace DevWorksCapstone.Controllers
                 count++;
             }
             devToUpdate.AvgRating = totalRating / count;
-
+            var team = _context.Teams.Where(t => t.TeamId == review.TeamCurrentlyOn).SingleOrDefault();
             _context.Update(devToUpdate);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Teams));
+
+            var Team = _context.Teams.Where(t => t.TeamId == review.TeamCurrentlyOn).SingleOrDefault();
+            List<Developer> findDev = new List<Developer>();
+
+            var devs = Developers(Team);
+            try
+            {
+                foreach (Developer devOnTeam in Team.DevelopersOnTeam)
+                {
+                    var developerOnTeam = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId);
+                    findDev.Add(devOnTeam);
+                }
+            }
+            catch { }
+
+            if(findDev.Count == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction("PleaseRateDevs", new { id = review.TeamCurrentlyOn });
+            }
         }
         public async Task<IActionResult> MyReviews()
         {
@@ -555,6 +584,13 @@ namespace DevWorksCapstone.Controllers
             var findReviews = _context.Reviews.Where(r => r.WhoImRating == developerObj.UserName).ToList();
 
             return View(findReviews);
+        }
+
+        public List<Developer> Developers(Team team)
+        {
+            var findDevsOnTeam = _context.Developers.Where(d => d.TeamId == team.TeamId).ToList();
+            team.DevelopersOnTeam = findDevsOnTeam;
+            return findDevsOnTeam;
         }
     }
 }
