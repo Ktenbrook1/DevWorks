@@ -1,44 +1,33 @@
-﻿@model IEnumerable<DevWorksCapstone.Models.Message>
-@*ForEmployers*@
+﻿@model IEnumerable<DevWorksCapstone.Models.Developer>
+
 @{
     ViewData["Title"] = "Messages";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Messages</h1>
-
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MessageToSend)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployerName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeveloperName)
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MessageToSend)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmployerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeveloperName)
-            </td>
-        <td>
-            @*<a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a> |
-            <a asp-action="Hire" asp-route-id="@item.DeveloperId">Hire</a>*@
-        </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    <a asp-action="ViewConversation" asp-route-id="@item.DeveloperId">View Messages</a>
+                    @*<a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a> |
+                        <a asp-action="Hire" asp-route-id="@item.DeveloperId">Hire</a>*@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

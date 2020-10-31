@@ -327,8 +327,21 @@ namespace DevWorksCapstone.Controllers
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
             var myMessage = _context.Message.Where(m => m.EmployerId == loggedInEmployer.EmployerId).ToList();
+            List<Developer> developers = new List<Developer>();
+            foreach(var message in myMessage)
+            {
+                var developerMessaged = _context.Developers.Where(d => d.DeveloperId == message.DeveloperId).SingleOrDefault();
+                if (developers.Contains(developerMessaged))
+                {
+                    continue;
+                }
+                else
+                {
+                    developers.Add(developerMessaged);
+                }
+            }
 
-            return View(myMessage);
+            return View(developers);
         }
 
         public async Task<IActionResult> Hire(int? id)

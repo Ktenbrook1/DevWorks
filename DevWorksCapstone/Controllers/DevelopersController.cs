@@ -355,6 +355,10 @@ namespace DevWorksCapstone.Controllers
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
             var myMessage = _context.Message.Where(m => m.DeveloperId == loggedInDeveloper.DeveloperId).ToList();
+            foreach(var message in myMessage)
+            {
+
+            }
 
             return View(myMessage);
         }
