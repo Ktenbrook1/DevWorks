@@ -304,6 +304,7 @@ namespace DevWorksCapstone.Controllers
             message.EmployerId= loggedInEmployer.EmployerId;
             message.EmployerName = loggedInEmployer.UserName;
             message.EmployerEmail = loggedInEmployer.Email;
+            message.Sender = loggedInEmployer.EmployerId;
 
             var DeveloperToContact = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
             message.DeveloperId = DeveloperToContact.DeveloperId;
@@ -342,6 +343,24 @@ namespace DevWorksCapstone.Controllers
             }
 
             return View(developers);
+        }
+        public async Task<IActionResult> ViewConversation(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var findDev = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            var findconverstaion = _context.Message.Where(m => m.EmployerId == loggedInEmployer.EmployerId).ToList();
+            List<Message> convoWithDev = new List<Message>();
+            foreach(var message in findconverstaion)
+            {
+                var convo = _context.Message.Where(m => m.DeveloperId == findDev.DeveloperId).ToList();
+                convoWithDev.Add(message);
+            }
+            return View(convoWithDev);
         }
 
         public async Task<IActionResult> Hire(int? id)

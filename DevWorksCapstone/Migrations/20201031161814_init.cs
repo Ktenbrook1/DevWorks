@@ -330,6 +330,7 @@ namespace DevWorksCapstone.Migrations
                     DeveloperName = table.Column<string>(nullable: true),
                     EmployerEmail = table.Column<string>(nullable: true),
                     DeveloperEmail = table.Column<string>(nullable: true),
+                    Sender = table.Column<int>(nullable: false),
                     EmployerId = table.Column<int>(nullable: false),
                     DeveloperId = table.Column<int>(nullable: false)
                 },

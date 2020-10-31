@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DevWorksCapstone.Models.Message>
+
+@{
+    ViewData["Title"] = "ViewConversation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Conversation</h1>
+
+<table class="table">
+    <thead>
+        <tr>            
+            <th>
+                @Html.DisplayNameFor(model => model.DeveloperName)
+            </th>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployerEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeveloperEmail)
+            </th>
+        
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeveloperName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MessageToSend)
+            </td>
+             <td>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

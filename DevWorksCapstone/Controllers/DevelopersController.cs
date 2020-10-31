@@ -332,7 +332,7 @@ namespace DevWorksCapstone.Controllers
             var loggedInDeveloper = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
             message.DeveloperId = loggedInDeveloper.DeveloperId;
             message.DeveloperName = loggedInDeveloper.UserName;
-
+            message.Sender = loggedInDeveloper.DeveloperId;
 
             var EmployerToContact = _context.Employers.Where(e => e.EmployerId == id).SingleOrDefault();
             message.EmployerId = EmployerToContact.EmployerId;

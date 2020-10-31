@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevWorksCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201029204701_init")]
+    [Migration("20201031161814_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,6 +234,9 @@ namespace DevWorksCapstone.Migrations
 
                     b.Property<string>("MessageToSend")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Sender")
+                        .HasColumnType("int");
 
                     b.HasKey("MessageID");
 
