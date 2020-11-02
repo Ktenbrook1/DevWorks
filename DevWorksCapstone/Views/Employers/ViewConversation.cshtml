@@ -9,7 +9,7 @@
 
 <table class="table">
     <thead>
-        <tr>            
+        <tr>
             <th>
                 @Html.DisplayNameFor(model => model.DeveloperName)
             </th>
@@ -20,7 +20,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.DeveloperName)
@@ -28,9 +29,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MessageToSend)
             </td>
-             <td>
+            <td>
+            <td>
+                <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>
+            </td>
             </td>
         </tr>
-}
+        }
     </tbody>
+   
 </table>

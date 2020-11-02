@@ -384,9 +384,12 @@ namespace DevWorksCapstone.Controllers
             List<Message> convoWithEmp = new List<Message>();
             foreach (var message in findconverstaion)
             {
-                var convo = _context.Message.Where(m => m.EmployerId == findEmp.EmployerId).ToList();
-                convoWithEmp.Add(message);
+                if (message.EmployerId == findEmp.EmployerId)
+                {
+                    convoWithEmp.Add(message);
+                }
             }
+
             return View(convoWithEmp);
         }
         public async Task<IActionResult> Team()

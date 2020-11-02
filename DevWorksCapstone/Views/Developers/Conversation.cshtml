@@ -10,7 +10,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EmployerName)
+                @*@Html.DisplayNameFor(model => model.EmployerName)*@
             </th>
             <th>
 
@@ -22,16 +22,29 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+        <tr>
+            @if (item.Sender == item.EmployerId)
+            {
                 <td>
                     @Html.DisplayFor(modelItem => item.EmployerName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MessageToSend)
                 </td>
+            }
+            else
+            {
                 <td>
+                    @Html.DisplayFor(modelItem => item.DeveloperName)
                 </td>
-            </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessageToSend)
+                </td>
+            }
+
+            <td>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

@@ -354,11 +354,14 @@ namespace DevWorksCapstone.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInEmployer = _context.Employers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             var findconverstaion = _context.Message.Where(m => m.EmployerId == loggedInEmployer.EmployerId).ToList();
+
             List<Message> convoWithDev = new List<Message>();
             foreach(var message in findconverstaion)
             {
-                var convo = _context.Message.Where(m => m.DeveloperId == findDev.DeveloperId).ToList();
-                convoWithDev.Add(message);
+                if(message.DeveloperId == findDev.DeveloperId)
+                {
+                    convoWithDev.Add(message);
+                }          
             }
             return View(convoWithDev);
         }
