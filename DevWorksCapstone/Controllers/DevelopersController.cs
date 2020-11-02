@@ -355,14 +355,40 @@ namespace DevWorksCapstone.Controllers
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
 
             var myMessage = _context.Message.Where(m => m.DeveloperId == loggedInDeveloper.DeveloperId).ToList();
+            List<Employer> employers = new List<Employer>();
             foreach(var message in myMessage)
             {
-
+                var employersMessaged = _context.Employers.Where(d => d.EmployerId == message.EmployerId).SingleOrDefault();
+                if (employers.Contains(employersMessaged))
+                {
+                    continue;
+                }
+                else
+                {
+                    employers.Add(employersMessaged);
+                }
             }
 
-            return View(myMessage);
+            return View(employers);
         }
-
+        public async Task<IActionResult> Conversation(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var findEmp = _context.Employers.Where(e => e.EmployerId == id).SingleOrDefault();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            var findconverstaion = _context.Message.Where(m => m.DeveloperId == loggedInDeveloper.DeveloperId).ToList();
+            List<Message> convoWithEmp = new List<Message>();
+            foreach (var message in findconverstaion)
+            {
+                var convo = _context.Message.Where(m => m.EmployerId == findEmp.EmployerId).ToList();
+                convoWithEmp.Add(message);
+            }
+            return View(convoWithEmp);
+        }
         public async Task<IActionResult> Team()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
