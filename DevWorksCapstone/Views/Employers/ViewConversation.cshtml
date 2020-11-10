@@ -11,19 +11,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DeveloperName)
+                Sender
             </th>
             <th>
 
             </th>
-            <th></th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
+        @{ 
+            var content = 0;
+        } 
         @foreach (var item in Model)
         {
             if (item.Sender == item.DeveloperId)
             {
+                content = item.DeveloperId;
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.DeveloperName)
@@ -31,11 +37,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.MessageToSend)
                     </td>
-                    <td>
-                    <td>
-                        <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>
-                    </td>
-                    </td>
+
                 </tr>
             }
             if (item.Sender == item.EmployerId)
@@ -47,11 +49,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.MessageToSend)
                     </td>
-                    <td>
-                    </td>
+                    
                 </tr>
             }
         }
     </tbody>
-   
+
 </table>
+<button style="float:right" class="btn btn-primary">
+    <a asp-action="Contact" style="color:white" asp-route-id="@content">Contact</a>
+</button>
