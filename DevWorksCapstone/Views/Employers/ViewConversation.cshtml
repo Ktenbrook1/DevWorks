@@ -22,19 +22,35 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeveloperName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MessageToSend)
-            </td>
-            <td>
-            <td>
-                <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>
-            </td>
-            </td>
-        </tr>
+            if (item.Sender == item.DeveloperId)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeveloperName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MessageToSend)
+                    </td>
+                    <td>
+                    <td>
+                        <a asp-action="Contact" asp-route-id="@item.DeveloperId">Contact</a>
+                    </td>
+                    </td>
+                </tr>
+            }
+            if (item.Sender == item.EmployerId)
+            {
+                <tr>
+                    <td>
+                        You
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MessageToSend)
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
    
