@@ -20,6 +20,9 @@
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ImageName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.GitHubLink)
             </th>
             <th>
@@ -41,6 +44,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
+                
                 <td>
                     <a class="anchor" href="@Html.DisplayFor(modelItem => item.GitHubLink)" target="_blank">My GitHub</a>
                 </td>
