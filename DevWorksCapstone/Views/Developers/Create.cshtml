@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
@@ -28,6 +28,7 @@
                 <input asp-for="GitHubLink" class="form-control" />
                 <span asp-validation-for="GitHubLink" class="text-danger"></span>
             </div>
+            <input type="hidden" asp-for="ImageName" />
             <div class="form-group">
                 <label asp-for="ProfileImgURL" class="control-label"></label>
                 <input asp-for="ProfileImgURL" accept="images/png, images/jpeg" />

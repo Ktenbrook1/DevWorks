@@ -18,6 +18,9 @@ namespace DevWorksCapstone.Models
         public string UserName { get; set; }
         [Display(Name = "Github")]
         public string GitHubLink { get; set; }
+        [Column(TypeName = "VARCHAR(100)")]
+        [StringLength(250)]
+        public string ImageName { get; set; }
         [NotMapped]
         [Display(Name = "Profile Picture")]
         public IFormFile ProfileImgURL { get; set; }

@@ -270,7 +270,7 @@ namespace DevWorksCapstone.Migrations
                     Email = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     GitHubLink = table.Column<string>(nullable: true),
-                    ProfileImgURL = table.Column<string>(nullable: true),
+                    ImageName = table.Column<string>(type: "VARCHAR(100)", maxLength: 250, nullable: true),
                     Bio = table.Column<string>(nullable: true),
                     RatePerHr = table.Column<double>(nullable: false),
                     IsInContract = table.Column<bool>(nullable: false),
