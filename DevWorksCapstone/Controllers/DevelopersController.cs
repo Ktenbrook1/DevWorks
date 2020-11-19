@@ -10,17 +10,21 @@ using DevWorksCapstone.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore.Internal;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DevWorksCapstone.Controllers
 {
     [Authorize(Roles = "Developer")]
     public class DevelopersController : Controller
     {
+        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly ApplicationDbContext _context;
 
-        public DevelopersController(ApplicationDbContext context)
+        public DevelopersController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: Developers
@@ -192,7 +196,18 @@ namespace DevWorksCapstone.Controllers
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 developer.IdentityUserId = userId;
                 developer.AvgRating = 0;
-                
+                developer.ImageName = developer.UserName;
+                //Save image to wwwroot/image
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(developer.ProfileImgURL.FileName);
+                string extension = Path.GetExtension(developer.ProfileImgURL.FileName);
+                developer.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await developer.ProfileImgURL.CopyToAsync(fileStream);
+                }
+
                 _context.Developers.Add(developer);
                 await _context.SaveChangesAsync();
 
