@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,9 @@ namespace DevWorksCapstone.Models
         public string UserName { get; set; }
         [Display(Name = "Github")]
         public string GitHubLink { get; set; }
+        [NotMapped]
         [Display(Name = "Profile Picture")]
-        public string ProfileImgURL { get; set; }
+        public IFormFile ProfileImgURL { get; set; }
         public string Bio { get; set; }
         [Display(Name = "Rate I charge per hr")]
         public double RatePerHr { get; set; }

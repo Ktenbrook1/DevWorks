@@ -20,31 +20,38 @@
         </tr>
     </thead>
     <tbody>
+        @{
+            var content = 0;
+        }
         @foreach (var item in Model)
         {
-        <tr>
-            @if (item.Sender == item.EmployerId)
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmployerName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MessageToSend)
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeveloperName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MessageToSend)
-                </td>
-            }
+            <tr>
+                @if (item.Sender == item.EmployerId)
+                {
+                    content = item.DeveloperId;
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MessageToSend)
+                    </td>
+                }
+                else if(item.Sender == item.DeveloperId)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeveloperName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MessageToSend)
+                    </td>
+                }
 
-            <td>
-            </td>
-        </tr>
+                <td>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+<button style="float:right" class="btn btn-primary">
+    <a asp-action="Contact" style="color:white" asp-route-id="@content">Contact</a>
+</button>
