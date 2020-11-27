@@ -347,11 +347,13 @@ namespace DevWorksCapstone.Controllers
             var loggedInDeveloper = _context.Developers.Where(d => d.IdentityUserId == userId).SingleOrDefault();
             message.DeveloperId = loggedInDeveloper.DeveloperId;
             message.DeveloperName = loggedInDeveloper.UserName;
-            message.Sender = loggedInDeveloper.DeveloperId;
+            message.DeveloperEmail = loggedInDeveloper.Email;
+            message.Sender = loggedInDeveloper.IdentityUserId;
 
             var EmployerToContact = _context.Employers.Where(e => e.EmployerId == id).SingleOrDefault();
             message.EmployerId = EmployerToContact.EmployerId;
             message.EmployerName = EmployerToContact.UserName;
+            message.EmployerEmail = EmployerToContact.Email;
 
             return View(message);
         }
@@ -384,6 +386,7 @@ namespace DevWorksCapstone.Controllers
                 }
             }
 
+
             return View(employers);
         }
         public async Task<IActionResult> Conversation(int? id)
@@ -402,6 +405,14 @@ namespace DevWorksCapstone.Controllers
                 if (message.EmployerId == findEmp.EmployerId)
                 {
                     convoWithEmp.Add(message);
+                }
+                if(message.Sender == loggedInDeveloper.IdentityUserId)
+                {
+                    message.developerID = message.Sender;
+                }
+                else
+                {
+                    message.employerID = message.Sender;
                 }
             }
 

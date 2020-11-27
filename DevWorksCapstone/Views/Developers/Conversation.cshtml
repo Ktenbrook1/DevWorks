@@ -26,7 +26,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                @if (item.Sender == item.EmployerId)
+                @if (item.Sender == item.employerID)
                 {
                     content = item.DeveloperId;
                     <td>
@@ -36,7 +36,7 @@
                         @Html.DisplayFor(modelItem => item.MessageToSend)
                     </td>
                 }
-                else if(item.Sender == item.DeveloperId)
+                else if(item.Sender == item.developerID)
                 {
                     <td>
                         @Html.DisplayFor(modelItem => item.DeveloperName)

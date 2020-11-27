@@ -12,20 +12,21 @@
     <div class="col-md-12">
         <form asp-action="Contact">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-       
-                <label asp-for="MessageToSend" class="control-label"></label>
-                <textarea style="min-width: 100%; min-height:350px;" asp-for="MessageToSend" class="form-control"></textarea>
-                <span asp-validation-for="MessageToSend" class="text-danger"></span>
-           
+
+            <label asp-for="MessageToSend" class="control-label"></label>
+            <textarea style="min-width: 100%; min-height:320px;" asp-for="MessageToSend" class="form-control"></textarea>
+            <span asp-validation-for="MessageToSend" class="text-danger"></span>
+
             <input type="hidden" asp-for="EmployerId" />
             <input type="hidden" asp-for="DeveloperId" />
             <input type="hidden" asp-for="DeveloperName" />
             <input type="hidden" asp-for="EmployerName" />
             <input type="hidden" asp-for="Sender" />
-
+            <input type="hidden" asp-for="DeveloperEmail" />
+            <input type="hidden" asp-for="EmployerEmail" />
 
             <div class="form-group">
-                <input type="submit" value="Send" class="btn btn-primary" style="margin-top: 5px;"/>
+                <input type="submit" value="Send" class="btn btn-primary" style="margin-top: 5px;" />
             </div>
         </form>
     </div>

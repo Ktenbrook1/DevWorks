@@ -235,8 +235,8 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("MessageToSend")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Sender")
-                        .HasColumnType("int");
+                    b.Property<string>("Sender")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MessageID");
 

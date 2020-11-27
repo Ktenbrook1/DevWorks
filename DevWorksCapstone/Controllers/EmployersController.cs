@@ -318,7 +318,7 @@ namespace DevWorksCapstone.Controllers
             message.EmployerId= loggedInEmployer.EmployerId;
             message.EmployerName = loggedInEmployer.UserName;
             message.EmployerEmail = loggedInEmployer.Email;
-            message.Sender = loggedInEmployer.EmployerId;
+            message.Sender = loggedInEmployer.IdentityUserId;
 
             var DeveloperToContact = _context.Developers.Where(d => d.DeveloperId == id).SingleOrDefault();
             message.DeveloperId = DeveloperToContact.DeveloperId;
@@ -375,7 +375,15 @@ namespace DevWorksCapstone.Controllers
                 if(message.DeveloperId == findDev.DeveloperId)
                 {
                     convoWithDev.Add(message);
-                }          
+                }
+                if (message.Sender == loggedInEmployer.IdentityUserId)
+                {
+                    message.employerID = message.Sender;
+                }
+                else
+                {
+                    message.developerID = message.Sender;
+                }
             }
             return View(convoWithDev);
         }

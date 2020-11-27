@@ -17,7 +17,11 @@ namespace DevWorksCapstone.Models
         public string DeveloperName { get; set; }
         public string EmployerEmail { get; set; }
         public string DeveloperEmail { get; set; }
-        public int Sender { get; set; }
+        public string Sender { get; set; }
+        [NotMapped]
+        public string developerID { get; set; }
+        [NotMapped]
+        public string employerID { get; set; }
 
         [ForeignKey("Employer")]
         public int EmployerId { get; set; }

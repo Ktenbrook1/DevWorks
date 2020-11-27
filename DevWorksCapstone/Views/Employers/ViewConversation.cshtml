@@ -27,7 +27,7 @@
         } 
         @foreach (var item in Model)
         {
-            if (item.Sender == item.DeveloperId)
+            if (item.Sender == item.developerID)
             {
                 content = item.DeveloperId;
                 <tr>
@@ -40,7 +40,7 @@
 
                 </tr>
             }
-            else if(item.Sender == item.EmployerId)
+            else if(item.Sender == item.employerID)
             {
                 <tr>
                     <td>
