@@ -196,7 +196,7 @@ namespace DevWorksCapstone.Controllers
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 developer.IdentityUserId = userId;
                 developer.AvgRating = 0;
-                developer.ImageName = developer.UserName;
+               
                 //Save image to wwwroot/image
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 string fileName = Path.GetFileNameWithoutExtension(developer.ProfileImgURL.FileName);

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevWorksCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201119160248_init")]
+    [Migration("20201127182047_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,8 +136,9 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProfileImgURL")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ImageName")
+                        .HasColumnType("VARCHAR(100)")
+                        .HasMaxLength(250);
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,8 +17,12 @@ namespace DevWorksCapstone.Models
         public string UserName { get; set; }
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
-        [Display(Name = "Profile Image")]
-        public string ProfileImgURL { get; set; }
+        [Column(TypeName = "VARCHAR(100)")]
+        [StringLength(250)]
+        public string ImageName { get; set; }
+        [NotMapped]
+        [Display(Name = "Profile Picture")]
+        public IFormFile ProfileImgURL { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

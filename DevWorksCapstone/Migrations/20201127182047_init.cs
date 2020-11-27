@@ -174,7 +174,7 @@ namespace DevWorksCapstone.Migrations
                     Email = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     CompanyName = table.Column<string>(nullable: true),
-                    ProfileImgURL = table.Column<string>(nullable: true),
+                    ImageName = table.Column<string>(type: "VARCHAR(100)", maxLength: 250, nullable: true),
                     IdentityUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

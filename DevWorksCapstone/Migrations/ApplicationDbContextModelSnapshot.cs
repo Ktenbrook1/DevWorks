@@ -134,8 +134,9 @@ namespace DevWorksCapstone.Migrations
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProfileImgURL")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ImageName")
+                        .HasColumnType("VARCHAR(100)")
+                        .HasMaxLength(250);
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");

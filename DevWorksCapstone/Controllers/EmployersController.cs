@@ -13,6 +13,8 @@ using System.Net.Mail;
 using System.Net;
 using DevWorksCapstone.Models.MyAPIKeys;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace DevWorksCapstone.Controllers
 {
@@ -20,10 +22,11 @@ namespace DevWorksCapstone.Controllers
     public class EmployersController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public EmployersController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public EmployersController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: Employers
@@ -80,6 +83,17 @@ namespace DevWorksCapstone.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 employer.IdentityUserId = userId;
+
+                //Save image to wwwroot/image
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(employer.ProfileImgURL.FileName);
+                string extension = Path.GetExtension(employer.ProfileImgURL.FileName);
+                employer.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await employer.ProfileImgURL.CopyToAsync(fileStream);
+                }
 
                 _context.Employers.Add(employer);
                 await _context.SaveChangesAsync();
