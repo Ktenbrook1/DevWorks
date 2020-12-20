@@ -27,14 +27,9 @@
             Uploaded Image
         </dt>
         <dd class="col-sm-10">
-            <img src="@("~/image/"+Model.ImageName)" asp-append-version="true" width="250px" height="250px" />
+            <img src="@("~/image/"+Model.ImageName)" asp-append-version="true" height="250px" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdentityUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdentityUser.Id)
-        </dd>
+        
     </dl>
 </div>
 <div>
