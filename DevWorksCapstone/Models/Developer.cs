@@ -40,6 +40,7 @@ namespace DevWorksCapstone.Models
         [NotMapped]
         public IEnumerable<Listing> Listings { get; set; }
         [NotMapped]
+        //[Display(Name = "Which Listing are you hiring this developer for?")]
         public SelectList ListingsForEmp { get; set; }
         [NotMapped]
         public int MyLisitng { get; set; }

@@ -364,7 +364,7 @@ namespace DevWorksCapstone.Controllers
             _context.Message.Add(message);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Messages));
+            return RedirectToAction("Conversation", new { id = message.employerID });
         }
         public async Task<IActionResult> Messages()
         {
