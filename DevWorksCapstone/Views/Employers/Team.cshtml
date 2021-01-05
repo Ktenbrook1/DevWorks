@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GitHubLink)
+                <a class="anchor" href="@Html.DisplayFor(modelItem => item.GitHubLink)" target="_blank">Open</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsInContract)

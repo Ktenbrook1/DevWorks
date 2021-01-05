@@ -5,20 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Contact</h1>
+<h1>Contact @Html.DisplayFor(model => model.DeveloperName)</h1>
 
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+
+    </dt>
+</dl>
 <hr />
 <div class="">
     <div class="col-md-12">
         <form asp-action="Contact">
-            
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MessageToSend" class="control-label"></label>
                 <textarea type="text" style="min-width: 100%; min-height:320px;" asp-for="MessageToSend" class="form-control"></textarea>
                 <span asp-validation-for="MessageToSend" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="DeveloperName"/>
+            <input type="hidden" asp-for="DeveloperName" />
             <input type="hidden" asp-for="EmployerId" />
             <input type="hidden" asp-for="DeveloperId" />
             <input type="hidden" asp-for="EmployerName" />
