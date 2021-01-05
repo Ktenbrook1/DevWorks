@@ -29,9 +29,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CompanyName)
             </th>
-            <th>
+            @*<th>
                     @Html.DisplayNameFor(model => model.ProfileImgURL)
-                </th>
+                </th>*@
             @*
                 <th>
                     @Html.DisplayNameFor(model => model.IdentityUser)
@@ -49,9 +49,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CompanyName)
                 </td>
-                <td  style="border-radius: 10%">
-                    @Html.DisplayFor(modelItem => item.ProfileImgURL)
-                </td>
+               
                 @*
                 <td>
                     @Html.DisplayFor(modelItem => item.IdentityUser.Id)

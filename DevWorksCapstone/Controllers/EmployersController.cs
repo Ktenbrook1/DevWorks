@@ -405,9 +405,22 @@ namespace DevWorksCapstone.Controllers
               .Select(da => da.Ability.AbilityName)
               .ToList();
 
-            var arrayOfStringAbilities = DeveloperToContract[0].SelectedAbilities;
+            string arrayOfStringAbilities = " ";
+            int stringCount = 1;
+            foreach (string ability in DeveloperToContract[0].SelectedAbilities)
+            {         
+                if(DeveloperToContract[0].SelectedAbilities.Count == stringCount)
+                {
+                    arrayOfStringAbilities = arrayOfStringAbilities + (ability );
+                }
+                else
+                {
+                    arrayOfStringAbilities = arrayOfStringAbilities + (ability + ", ");
+                }               
+                stringCount++;
+            }
             var theDeveloper = DeveloperToContract[0];
-
+            theDeveloper.arrayOfStringAbilities = arrayOfStringAbilities;
             var allListing = _context.Listings.Where(l => l.EmployerId == loggedInEmployer.EmployerId);
             theDeveloper.Listings = allListing;
 

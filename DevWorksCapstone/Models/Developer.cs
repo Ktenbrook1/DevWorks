@@ -45,7 +45,8 @@ namespace DevWorksCapstone.Models
         [NotMapped]
         public int MyLisitng { get; set; }
         public ICollection<DeveloperAbilities> DevAbilities { get; set; }
-
+        [NotMapped]
+        public string arrayOfStringAbilities { get; set; }
         public Developer()
         {
             SelectedAbilities = new List<string>();
