@@ -518,11 +518,15 @@ namespace DevWorksCapstone.Controllers
             var devs = Developers(Team);
             try
             {
-                foreach (Developer devOnTeam in Team.DevelopersOnTeam)
+                if(devs.Count > 0)
                 {
-                    var developerOnTeam = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId);
-                    findDev.Add(devOnTeam);
+                    foreach (Developer devOnTeam in Team.DevelopersOnTeam)
+                    {
+                        var developerOnTeam = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId);
+                        findDev.Add(devOnTeam);
+                    }
                 }
+               
             }
             catch
             {
@@ -614,7 +618,7 @@ namespace DevWorksCapstone.Controllers
                 count++;
             }
             devToUpdate.AvgRating = totalRating / count;
-            var team = _context.Teams.Where(t => t.TeamId == review.TeamCurrentlyOn).SingleOrDefault();
+            //var team = _context.Teams.Where(t => t.TeamId == review.TeamCurrentlyOn).SingleOrDefault();
             _context.Update(devToUpdate);
             await _context.SaveChangesAsync();
 
@@ -669,8 +673,16 @@ namespace DevWorksCapstone.Controllers
         public List<Developer> Developers(Team team)
         {
             var findDevsOnTeam = _context.Developers.Where(d => d.TeamId == team.TeamId).ToList();
-            team.DevelopersOnTeam = findDevsOnTeam;
-            return findDevsOnTeam;
+            List<Developer> foundDevs = new List<Developer>();
+            foreach(Developer dev in findDevsOnTeam)
+            {
+                if(dev.IsInContract == true)
+                {
+                    foundDevs.Add(dev);
+                }
+            }
+          
+            return foundDevs;
         }
     }
 }

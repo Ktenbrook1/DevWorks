@@ -438,8 +438,11 @@ namespace DevWorksCapstone.Controllers
 
             }
             ViewData["TeamExist"] = findDevs.Count();
-            ViewData["TeamIsAlive"] = team.TeamIsAlive;
-
+            if(team != null)
+            {
+                ViewData["TeamIsAlive"] = team.TeamIsAlive;
+            }
+            
             return View(findDevs);
         }
         public async Task<IActionResult> MakeReview()
