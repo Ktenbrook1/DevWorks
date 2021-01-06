@@ -5,10 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Team</h1>
+<h1>Team </h1>
 @if ((int)ViewData["TeamExist"] > 0)
 {
+ @if ((bool)ViewData["TeamIsAlive"] == false)
+ {
     <a asp-action="MakeReview" asp-route-id="">Finished </a>
+ }
 }
 
 <table class="table">
@@ -40,7 +43,7 @@
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GitHubLink)
+                    <a class="anchor" href="@Html.DisplayFor(modelItem => item.GitHubLink)" target="_blank">Open</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsInContract)

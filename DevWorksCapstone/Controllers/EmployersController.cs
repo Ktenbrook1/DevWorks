@@ -472,8 +472,8 @@ namespace DevWorksCapstone.Controllers
             }
             catch
             {
-                
-            }          
+
+            }        
 
             return RedirectToAction(nameof(Index));
         }
@@ -556,7 +556,7 @@ namespace DevWorksCapstone.Controllers
                 return NotFound();
             }
 
-            var findListing = _context.Listings.Where(l => l.ListingId == id).SingleOrDefault();
+            var findListing = _context.Listings.Where(l => l.ListingId == team.ListingId).SingleOrDefault();
             var Team = _context.Teams.Where(t => t.ListingId == findListing.ListingId).SingleOrDefault();
             List<Developer> findDev = new List<Developer>();
 
@@ -572,6 +572,12 @@ namespace DevWorksCapstone.Controllers
             catch
             {
 
+            }
+            if(findDev.Count == 0)
+            {
+                Team.TeamIsAlive = false;
+                _context.Teams.Update(Team);
+                await _context.SaveChangesAsync();
             }
             return View(findDev);
         }
@@ -626,7 +632,11 @@ namespace DevWorksCapstone.Controllers
             }
             catch { }
 
-            if(findDev.Count == 0)
+            Team.TeamIsAlive = false;
+            _context.Teams.Update(Team);
+            await _context.SaveChangesAsync();
+
+            if (findDev.Count == 0)
             {
                 return RedirectToAction(nameof(Index));
             }

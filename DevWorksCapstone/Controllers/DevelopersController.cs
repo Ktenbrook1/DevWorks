@@ -423,10 +423,9 @@ namespace DevWorksCapstone.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var loggedInDeveloper = _context.Developers.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             List<Developer> findDevs = new List<Developer>();
-           
+            var team = _context.Teams.Where(t => t.TeamId == loggedInDeveloper.TeamId).SingleOrDefault();
             try
             {
-                var team = _context.Teams.Where(t => t.TeamId == loggedInDeveloper.TeamId).SingleOrDefault();
                 var devs = Developers(team);
                 foreach (Developer devOnTeam in team.DevelopersOnTeam)
                 {
@@ -439,6 +438,7 @@ namespace DevWorksCapstone.Controllers
 
             }
             ViewData["TeamExist"] = findDevs.Count();
+            ViewData["TeamIsAlive"] = team.TeamIsAlive;
 
             return View(findDevs);
         }
@@ -461,11 +461,12 @@ namespace DevWorksCapstone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MakeReview(Review review)
         {
-            var devJustReviewed = _context.Developers.Where(d => d.DeveloperId == review.DeveloperId).SingleOrDefault();
-            var teamOfDev = _context.Teams.Where(t => t.TeamId == devJustReviewed.TeamId).SingleOrDefault();
-            devJustReviewed.IsInContract = false;
-            devJustReviewed.TeamId = null;
-            _context.Update(devJustReviewed);
+            var employerJustReviewed = _context.Employers.Where(e => e.EmployerId == review.EmployerId).SingleOrDefault();
+            var developerOnTeam = _context.Developers.Where(d => d.DeveloperId == review.DeveloperId).SingleOrDefault();
+            var teamOfDev = _context.Teams.Where(t => t.TeamId == developerOnTeam.TeamId).SingleOrDefault();
+            developerOnTeam.IsInContract = false;
+            developerOnTeam.TeamId = null;
+            _context.Update(developerOnTeam);
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
 
@@ -473,7 +474,7 @@ namespace DevWorksCapstone.Controllers
             {
                 if (teamOfDev.DevelopersOnTeam.Count == 0)
                 {
-                    var findTeam = _context.Teams.Where(t => t.TeamId == devJustReviewed.TeamId).SingleOrDefault();
+                    var findTeam = _context.Teams.Where(t => t.TeamId == developerOnTeam.TeamId).SingleOrDefault();
                     var findListing = _context.Listings.Where(l => l.ListingId == findTeam.ListingId).SingleOrDefault();
                     _context.Teams.Remove(findTeam);
                     _context.Listings.Remove(findListing);
