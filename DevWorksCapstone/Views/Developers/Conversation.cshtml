@@ -21,14 +21,14 @@
     </thead>
     <tbody>
         @{
-            var content = 0;
+            int content = 0;
         }
         @foreach (var item in Model)
         {
             <tr>
                 @if (item.Sender == item.employerID)
                 {
-                    content = item.DeveloperId;
+                    content = item.EmployerId;
                     <td>
                         @Html.DisplayFor(modelItem => item.EmployerName)
                     </td>
@@ -38,8 +38,9 @@
                 }
                 else if (item.Sender == item.developerID)
                 {
+
                     <td>
-                        @Html.DisplayFor(modelItem => item.DeveloperName)
+                        You
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.MessageToSend)
@@ -51,6 +52,7 @@
             </tr>
         }
     </tbody>
+    
 </table>
 <button style="float:right" class="btn btn-primary">
     <a asp-action="Contact" style="color:white" asp-route-id="@content">Contact</a>

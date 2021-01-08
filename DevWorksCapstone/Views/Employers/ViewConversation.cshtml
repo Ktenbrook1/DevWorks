@@ -22,9 +22,9 @@
         </tr>
     </thead>
     <tbody>
-        @{ 
+        @{
             var content = 0;
-        } 
+        }
         @foreach (var item in Model)
         {
             if (item.Sender == item.developerID)
@@ -40,7 +40,7 @@
 
                 </tr>
             }
-            else if(item.Sender == item.employerID)
+            else if (item.Sender == item.employerID)
             {
                 <tr>
                     <td>
@@ -49,7 +49,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.MessageToSend)
                     </td>
-                    
+
                 </tr>
             }
         }
@@ -58,4 +58,7 @@
 </table>
 <button style="float:right" class="btn btn-primary">
     <a asp-action="Contact" style="color:white" asp-route-id="@content">Contact</a>
+</button>
+<button style="float:left" class="btn btn-primary">
+    <a asp-action="Hire" style="color:white" asp-route-id="@content">Hire</a>
 </button>

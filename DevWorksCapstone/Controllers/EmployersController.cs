@@ -251,7 +251,7 @@ namespace DevWorksCapstone.Controllers
                     _context.SaveChanges();
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(EmployerListings));
             }
             return View(listing);
         }
@@ -567,6 +567,12 @@ namespace DevWorksCapstone.Controllers
             var devs = Developers(Team);
             try
             {
+                if(Team.DevelopersOnTeam == null)
+                {
+                    _context.Teams.Remove(Team);
+                    _context.Listings.Remove(findListing);
+                    await _context.SaveChangesAsync();
+                }
                 foreach (Developer devOnTeam in Team.DevelopersOnTeam)
                 {
                     var developerOnTeam = _context.Developers.Where(d => d.DeveloperId == devOnTeam.DeveloperId);
